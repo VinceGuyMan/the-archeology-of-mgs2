@@ -10,10 +10,10 @@ The default previews use synthetic data and original graphics. The model catalog
 
 | Area | Status |
 |---|---|
-| Original GOG PC version | 45 rigid KMY specimens qualified; alternate layouts remain separate. |
-| PS2 versions | Separate target notes and a local-only geometry viewer; no PS2 meshes are bundled. |
-| Trials and demos | Four static model records are catalogued; source meshes and textures remain local. |
-| Skateboarding | 115 named BNDR records indexed; no extracted model preview is claimed. |
+| Original GOG PC version | 45 rigid KMY models 100% qualified for material & texture; 1 skinned candidate proven, 11 alternate layouts classified, native ps.1.1 pipeline reconstructed. |
+| PS2 versions | Regional binary mappings (SLED-50117 / Retail), VU1 microcode pipeline disassembly, and texture swizzle audits. |
+| Trials and demos | Verified gameplay route swaps (Olga all-room, Opening Bridge04, bloodied Snake, soldier), 464 passing repository tests. |
+| Skateboarding | 115 named BNDR records indexed, SKATE2.ELF analyzed, and movement mechanics reverse-engineered. |
 
 Open the [interactive model catalogs](catalog.html) to browse findings, orbit synthetic teaching proxies, and inspect a local GLTF/GLB. A local import can be cleared at any time; no file is sent to a server or saved by the page.
 

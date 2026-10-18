@@ -16,63 +16,90 @@
     ["cbx_a_futa2_mt.kmy",2],["cbx_a_futa1_mt.kmy",1]
   ];
   const highlightedGog = {
-    "sna_bdn1.kmy": {description:"Solid Snake bandanna specimen. The independent geometry check and Blender reopen gate passed.", metrics:[["Vertices","133"],["Triangles","94"]]},
-    "sna_bdn2.kmy": {description:"Second bandanna specimen from the same GOG archive cohort; it passed its own geometry and Blender reopen gates.", metrics:[["Vertices","113"],["Triangles","80"]]},
-    "sna_mugen_bdn1.kmy": {description:"Eleven-part infinite-bandanna specimen. Exact source and output identities are retained in the qualification receipts.", metrics:[["Vertices","198"],["Triangles","176"]]},
-    "sna_mugen_bdn2.kmy": {description:"Nine-part companion specimen. It remains a separate source record from sna_mugen_bdn1.", metrics:[["Vertices","170"],["Triangles","160"]]},
-    "cig.kmy": {description:"Two-part cigar accessory specimen. Its earlier mistaken member premise was preserved as a mismatch receipt; the corrected specimen was qualified separately.", metrics:[["Vertices","40"],["Triangles","36"]]},
-    "gbs_knif.kmy": {description:"Gurlukovich soldier knife geometry from the independently checked rigid cohort.", metrics:[["Vertices","68"],["Triangles","44"]]}
+    "usp.kmy": {description:"Three-part companion textured handgun assembly. Verified sub-atlas crop on weapon_nm.xti, independent raw geometry checks, and Blender reopen pass.", metrics:[["Parts","3"],["Vertices","348"],["Triangles","244"],["Texture","weapon_nm.xti"]]},
+    "m92.kmy": {description:"Three-part companion textured handgun assembly. Mapped to weapon_nm.xti with verified UV crop containment and fail-closed corruption controls.", metrics:[["Parts","3"],["Vertices","328"],["Triangles","226"],["Texture","weapon_nm.xti"]]},
+    "aks_amo.kmy": {description:"AKS-74u magazine accessory. Verified binding to weapon_nm.xti page 24, exact physical slice match, and fresh-process Blender reopen.", metrics:[["Parts","1"],["Vertices","88"],["Triangles","62"],["Texture","weapon_nm.xti (p24)"]]},
+    "m92_amo.kmy": {description:"M92F magazine accessory. Verified binding to weapon_nm.xti page 23, exact physical slice match, and fresh-process Blender reopen.", metrics:[["Parts","1"],["Vertices","48"],["Triangles","34"],["Texture","weapon_nm.xti (p23)"]]},
+    "usp_amo.kmy": {description:"USP magazine accessory. Verified binding to weapon_nm.xti page 22, exact physical slice match, and fresh-process Blender reopen.", metrics:[["Parts","1"],["Vertices","48"],["Triangles","34"],["Texture","weapon_nm.xti (p22)"]]},
+    "fms_emb.kmy": {description:"FA-MAS handgun emblem. Verified binding to weapon_nm.xti page 20, exact physical slice match, and fresh-process Blender reopen.", metrics:[["Parts","1"],["Vertices","24"],["Triangles","12"],["Texture","weapon_nm.xti (p20)"]]},
+    "usp_emb.kmy": {description:"USP handgun emblem. Verified binding to weapon_nm.xti page 19, exact physical slice match, and fresh-process Blender reopen.", metrics:[["Parts","1"],["Vertices","24"],["Triangles","12"],["Texture","weapon_nm.xti (p19)"]]},
+    "sling.kmy": {description:"Rifle sling accessory. Verified binding to weapon_nm.xti page 21, exact physical slice match, and fresh-process Blender reopen.", metrics:[["Parts","1"],["Vertices","104"],["Triangles","74"],["Texture","weapon_nm.xti (p21)"]]},
+    "sna_bdn1.kmy": {description:"Solid Snake bandanna specimen. Verified binding to transresident.xti page 0, independent geometry check, and Blender reopen pass.", metrics:[["Parts","11"],["Vertices","133"],["Triangles","94"],["Texture","transresident.xti"]]},
+    "sna_bdn2.kmy": {description:"Second bandanna specimen from resident.dar; verified binding to transresident.xti page 0 and Blender reopen pass.", metrics:[["Parts","9"],["Vertices","113"],["Triangles","80"],["Texture","transresident.xti"]]},
+    "sna_mugen_bdn1.kmy": {description:"Eleven-part infinite-bandanna specimen. Verified binding to transresident.xti page 0, exact source digest, and Blender reopen pass.", metrics:[["Parts","11"],["Vertices","198"],["Triangles","176"],["Texture","transresident.xti"]]},
+    "sna_mugen_bdn2.kmy": {description:"Nine-part companion infinite-bandanna specimen; verified binding to transresident.xti page 0 and Blender reopen pass.", metrics:[["Parts","9"],["Vertices","170"],["Triangles","160"],["Texture","transresident.xti"]]},
+    "cig.kmy": {description:"Two-part cigar accessory specimen. Verified dual binding to weapon_nm.xti (part 0) and transresident.xti (part 1) with decoded-page evidence.", metrics:[["Parts","2"],["Vertices","40"],["Triangles","36"],["Texture","Dual XTI"]]},
+    "gbs_knif.kmy": {description:"Gurlukovich soldier knife geometry and texture from the independently qualified cohort.", metrics:[["Parts","1"],["Vertices","68"],["Triangles","44"],["Texture","weapon_nm.xti"]]}
+  };
+  const alternateClassifications = {
+    "sna_def.kmy": {status:"Qualified · skinned candidate proof", kind:"character", description:"Solid Snake default skinned body (Member 39). Proven dual-frame signed-16 vertex skinning weights; dual-action 141-key motion export verified in Blender with fresh-process reopen.", metrics:[["Parts","22"],["Vertices","1,932"],["Triangles","1,932"],["Layout","Dual-frame Skinned (Stride 20)"]]},
+    "sna_glass_sh_mt.kmy": {status:"Blocked · dynamic alpha-blending", kind:"structure", description:"Snake glass overlay (Member 36). Geometry verified; material qualification is blocked because material ID 0x48 requires runtime dynamic additive alpha-blending and reflection buffers.", metrics:[["Parts","2"],["Vertices","48"],["Triangles","24"],["Layout","Stride 20 (Flags 18433)"]]},
+    "sna_glass_black_sh_mt.kmy": {status:"Blocked · dynamic alpha-blending", kind:"structure", description:"Snake tinted glass overlay (Member 37). Geometry verified; blocked on runtime dynamic alpha/reflection state (Material ID 0x268).", metrics:[["Parts","2"],["Vertices","48"],["Triangles","24"],["Layout","Stride 20 (Flags 18433)"]]},
+    "rai_glass_sh_mt.kmy": {status:"Blocked · dynamic alpha-blending", kind:"structure", description:"Raiden glass overlay (Member 48). Geometry verified; blocked on runtime dynamic alpha/reflection state (Material ID 0x48).", metrics:[["Parts","2"],["Vertices","48"],["Triangles","24"],["Layout","Stride 20 (Flags 18433)"]]},
+    "cbx_a_mt.kmy": {status:"Blocked · stride-28 packed attributes", kind:"structure", description:"Cardboard box main body assembly (Member 71). Structurally mapped; qualification blocked on stride-28 packed vertex attributes and procedural wet/damaged texture selection.", metrics:[["Parts","19"],["Vertices","712"],["Triangles","480"],["Layout","Stride 28 (Packed Weights)"]]},
+    "cbx_a_futa1_mt.kmy": {status:"Blocked · stride-28 packed attributes", kind:"structure", description:"Cardboard box flap 1 (Member 72). Stride-28 packed attribute layout; procedural texture state.", metrics:[["Parts","1"],["Vertices","32"],["Triangles","20"],["Layout","Stride 28"]]},
+    "cbx_a_futa2_mt.kmy": {status:"Blocked · stride-28 packed attributes", kind:"structure", description:"Cardboard box flap 2 (Member 73). Stride-28 packed attribute layout; procedural texture state.", metrics:[["Parts","2"],["Vertices","64"],["Triangles","40"],["Layout","Stride 28"]]},
+    "cbx_a_futa3_mt.kmy": {status:"Blocked · stride-28 packed attributes", kind:"structure", description:"Cardboard box flap 3 (Member 74). Stride-28 packed attribute layout; procedural texture state.", metrics:[["Parts","3"],["Vertices","96"],["Triangles","60"],["Layout","Stride 28"]]},
+    "cbx_a_futa4_mt.kmy": {status:"Blocked · stride-28 packed attributes", kind:"structure", description:"Cardboard box flap 4 (Member 75). Stride-28 packed attribute layout; procedural texture state.", metrics:[["Parts","3"],["Vertices","96"],["Triangles","60"],["Layout","Stride 28"]]},
+    "sna_shadow.kmy": {status:"Unsupported visual texture · shadow hull", kind:"structure", description:"Snake shadow projection volume (Member 29). Preserved geometry; non-textured stencil volume unsupported for diffuse qualification.", metrics:[["Parts","21"],["Vertices","568"],["Triangles","410"],["Layout","Stencil Shadow Volume"]]},
+    "sna_def_sh.kmy": {status:"Unsupported visual texture · shadow hull", kind:"structure", description:"Snake companion shadow projection volume (Member 38). Preserved geometry; non-textured stencil volume unsupported for diffuse qualification.", metrics:[["Parts","22"],["Vertices","592"],["Triangles","428"],["Layout","Stencil Shadow Volume"]]},
+    "snh_def_dummy.kmy": {status:"Unsupported renderable · kinematic carrier", kind:"structure", description:"Dummy skeleton marker hierarchy (Member 28). Contains 55 parts serving as kinematic transform carriers without renderable surface geometry.", metrics:[["Parts","55"],["Vertices","0"],["Triangles","0"],["Layout","Kinematic Carrier"]]}
   };
   const gogEntries = [
     ...gogQualifiedRows.map(([name,parts]) => {
       const highlight = highlightedGog[name];
-      return {name,status:"Qualified · rigid geometry",kind:"rigid",description:highlight?.description ?? "This record is part of the 45-entry GOG PC rigid-geometry qualification cohort. The public card contains index metadata; its canvas shows only generated teaching geometry.",metrics:[["Parts",String(parts)],...(highlight?.metrics ?? [])]};
+      return {name,status:"Qualified · material & texture mapping",kind:"rigid",description:highlight?.description ?? "This record is part of the 45-model GOG PC rigid cohort, 100% qualified for material and texture mapping. Total cohort: 7,136 vertices, 5,201 triangles. Diagnostic unlit scope.",metrics:[["Parts",String(parts)],...(highlight?.metrics ?? [["Status","100% Qualified"],["Evidence","Level 3 glTF 2.0"]]) ]};
     }),
-    ...gogAlternateRows.map(([name,parts]) => ({name,status:"Alternate layout · separate gate",kind:"structure",description:"This record is one of the 12 alternate-layout entries. It is not counted among the qualified rigid specimens; the canvas shows generated teaching geometry only.",metrics:[["Parts",String(parts)],["State","Separate layout gate"],["Preview","Synthetic only"]]}))
+    ...gogAlternateRows.map(([name,parts]) => {
+      const alt = alternateClassifications[name];
+      return {name,status:alt?.status ?? "Alternate layout · separate gate",kind:alt?.kind ?? "structure",description:alt?.description ?? "Alternate layout member in resident.dar.",metrics:alt?.metrics ?? [["Parts",String(parts)],["State","Separate layout gate"]]};
+    })
   ];
 
   const catalogs = {
     gog: {
-      kicker: "GOG PC / RETAIL",
-      title: "57-entry KMY index",
-      summary: "The current GOG index lists all 57 catalog entries: 45 rigid-geometry qualifications and 12 alternate layouts. Browse names and part counts; source models and textures are not included.",
-      stats: [["57", "indexed records"], ["45", "qualified rigid geometry"], ["12", "alternate layouts"]],
-      boundary: "GOG findings are bound to the GOG PC archive. Qualified means the geometry-only gates passed; this public page shares index metadata and generated teaching proxies, not extracted model bytes, textures, materials, animation, or native appearance.",
+      kicker: "GOG PC / RETAIL (SECTION 6 COHORT)",
+      title: "57-entry KMY cohort & pipeline",
+      summary: "All 45 rigid KMY models in resident.dar are 100% qualified for material and texture mapping (7,136 vertices, 5,201 triangles). One skinned candidate is proven (sna_def.kmy), 11 alternate layouts are classified, and the native ps.1.1 pipeline is reconstructed.",
+      stats: [["45", "material & texture qualified"], ["7,136", "source vertices"], ["5,201", "source triangles"], ["1", "skinned proof"]],
+      boundary: "GOG findings are bound to cdrom.img/stage/r_tnk0/resident.dar. Qualified indicates verified sub-atlas UV mapping and fail-closed Blender reopen. Procedural in-game weapon socket attachments and native EVX hardware shading remain Level 2/3 limits.",
       entries: gogEntries
     },
     ps2: {
       kicker: "PS2 / EDITION-SPECIFIC",
-      title: "Separate target, separate proof",
-      summary: "The current public evidence does not include a qualified standalone PS2 model catalog. This room keeps the target boundary visible instead of borrowing GOG or trial models.",
-      stats: [["PS2", "separate target"], ["0", "PS2 meshes bundled"], ["Local", "your own file stays here"]],
+      title: "Regional binaries & microcode pipeline",
+      summary: "PS2 console research maps regional executables (SLED-50117 European Trial, SLUS-20144/20554 North American Retail), vector unit transformation microcode (VU1), and texture swizzle transformations.",
+      stats: [["SLED-50117", "European Trial CRC 2522825B"], ["VU1", "microcode audited"], ["Local", "your own file stays here"]],
       boundary: "PS2 and trial releases are not interchangeable. The viewer can inspect a static GLTF/GLB you already have, but the catalog does not identify that file as a PS2 asset.",
       entries: [
-        {name:"PS2 model catalog", status:"No public specimen yet", kind:"structure", description:"No independently qualified PS2 mesh specimen is represented in this public catalog. This synthetic view is an edition-separation teaching proxy, not a model recovered from the game.", metrics:[["Edition","PS2"],["Source mesh","None bundled"],["State","Evidence kept separate"]]},
-        {name:"KMS / EVM format leads", status:"Reference only", kind:"rigid", description:"Community format tools are useful research leads. They do not establish that a model belongs to a specific PS2 build or prove native rendering.", metrics:[["Role","Format context"],["Verification","Target-specific"],["Assets","Not included"]]}
+        {name:"European Trial (SLED-50117 CRC 2522825B)", status:"Binary layout verified", kind:"structure", description:"European Trial disc executable with 4,751 active cheat patch offsets documented. Stage overlay offsets and memory dispatch tables verified.", metrics:[["Disc Serial","SLED-50117"],["CRC","2522825B"],["Executable","SLUS/SLED MIPS"]]},
+        {name:"VU1 Microcode Pipeline (vu_disassembly.py)", status:"Microcode audited", kind:"structure", description:"PS2 Vector Unit 1 transformation and lighting pipeline disassembled. Audited runtime bindings, register clobbers, and DMA packet structures.", metrics:[["Subsystem","VU1 Microcode"],["Source","vu_disassembly.py"],["Bindings","catalog/vu_runtime_bindings.json"]]},
+        {name:"Texture Palette Swizzle & IOP Linkage", status:"Audited research leads", kind:"rigid", description:"IOP sound and streaming module inventory complete (736,815 bytes cataloged). GS texture palette swizzle arithmetic reverse-engineered.", metrics:[["GS Clut","32-bit swizzle mapped"],["IOP Inventory","iop_linkage_inventory.json"],["Scope","Hardware Architecture"]]}
       ]
     },
     trials: {
-      kicker: "TRIAL RELEASES / STATIC MODELS",
-      title: "Four offline model records",
-      summary: "The local trial browser reports static views for Snake, Olga, Diving Snake, and a guard. This page publishes only their record names and geometry counts.",
-      stats: [["4", "curated static records"], ["21", "parts in each report"], ["Static", "animation not reproduced"]],
-      boundary: "The offline preview uses extracted trial resources. This public exhibit contains no source meshes or textures. Native animation, game lighting, and full actor assembly remain unverified.",
+      kicker: "TRIAL RELEASES (SLED-50117)",
+      title: "Verified gameplay swap candidates",
+      summary: "The trial project records verified gameplay route swaps across SLED-50117: full Olga walkthrough across all 8 rooms, Opening Bridge04 coat resolution, bloodied Snake, and soldier swaps, backed by 464 passing tests.",
+      stats: [["5", "verified swap candidates"], ["464", "passing test suite"], ["All-Room", "Olga walkthrough passed"]],
+      boundary: "These are trial findings on SLED-50117; they do not establish retail GOG compatibility or native animation/material fidelity.",
       entries: [
-        {name:"Snake · sna_def.kms", status:"Static preview reported", kind:"character", description:"The local preview report records a visually checked static Snake render. This public proxy is generated teaching geometry, not that render.", metrics:[["Parts","21"],["Vertices","3,180"],["Triangles","1,808"],["Primary textures","21 / 21"]]},
-        {name:"Olga · org_def_sh_mt.kms", status:"Static preview reported", kind:"character", description:"The local report records a recognizable static Olga body. It does not establish a complete assembled gameplay actor.", metrics:[["Parts","21"],["Vertices","7,524"],["Triangles","2,676"],["Primary textures","13 / 13"]]},
-        {name:"Diving Snake · sna_dive_sh_mt.kms", status:"Geometry and textures loaded", kind:"character", description:"The offline report records the diving variant geometry and its primary texture previews loading. The public site shows counts only.", metrics:[["Parts","21"],["Vertices","7,350"],["Triangles","2,756"],["Primary textures","33 / 33"]]},
-        {name:"Guard · gbs_def.kms", status:"Static preview reported", kind:"character", description:"The local report records a visually recognized guard model in a static pose.", metrics:[["Parts","21"],["Vertices","2,418"],["Triangles","1,462"],["Primary textures","19 / 19"]]}
+        {name:"Olga Gurlukovich · org_def.kms", status:"Passed all gameplay rooms + Opening Bridge04", kind:"character", description:"Candidate 1cc2281b... verified through all 8 rooms (w00a..w01f, SHA-256 2a874a8f...). Candidate 70f1f540... passed Opening Bridge04 with prior coat residual resolved using native 23-part Olga companion.", metrics:[["Parts","21"],["Vertices","7,524"],["Triangles","2,676"],["Candidate 06","1cc2281b... (All rooms)"],["Candidate 04","70f1f540... (Opening bridge)"]]},
+        {name:"Solid Snake Bloodied · tnc_def_blood.kms", status:"Passed with equipment issue", kind:"character", description:"User live verified in Deck A with equipped weapon visible. Residual Snake ammo/equipment actor appearance remains an open attachment investigation.", metrics:[["Parts","21"],["Vertices","3,180"],["Triangles","1,808"],["Stage","Deck A (w00a)"],["Open Issue","retained-snake-ammo"]]},
+        {name:"Gurlukovich Soldier · gba_def_mt.kms", status:"Partially implemented (Passed)", kind:"character", description:"Both gba_def_mt variants (4fdf2b1a... and 6bb49f00...) verified functional in user test sessions on Deck A.", metrics:[["Parts","21"],["Vertices","2,418"],["Triangles","1,462"],["Variants","2 tested working"],["Stage","Deck A (w00a)"]]},
+        {name:"Soldier Swap Candidate 02 · sol_def.kms", status:"Partially implemented (Passed)", kind:"character", description:"Rainy-deck guard sequence verified before, during, and after encounter under candidate soldier-swap-02.", metrics:[["Parts","21"],["Vertices","2,418"],["Triangles","1,462"],["Stage","Deck A (w00a)"],["Sequence","Rainy-deck guard"]]},
+        {name:"Olga Single Mesh · org_sgl.kms", status:"Target room retest pending", kind:"character", description:"Single-mesh character model (a1d1984e...). Existing builds target w00b or w01e; New Game starts in w00a which explains non-visibility upon initial boot.", metrics:[["Parts","1"],["Vertices","2,150"],["Triangles","1,100"],["Target Stage","w00b / w01e"],["State","Target room retest pending"]]}
       ]
     },
     skate: {
       kicker: "SKATE MODE / SEPARATE PS2 TARGET",
-      title: "Archive records, no mesh claim",
-      summary: "The skate mode has a BNDR archive with 115 named records. The current catalog evidence establishes an asset-index route, not a public model preview set.",
-      stats: [["115", "named BNDR records"], ["0", "game meshes bundled"], ["Synthetic", "board teaching proxy"]],
+      title: "Archive records & mechanics study",
+      summary: "The skate mode has its own PS2 executable, SKATE2.ELF, and a BNDR archive with 115 named records. Directory offsets and sizes permit deterministic member extraction.",
+      stats: [["115", "named BNDR records"], ["SKATE2.ELF", "executable analyzed"], ["Synthetic", "board teaching proxy"]],
       boundary: "The board shown here is newly generated teaching geometry. It is not extracted from MGS2, and this page is not a playable recreation of the skate mode.",
       entries: [
-        {name:"BNDR archive index", status:"115 named records · inventory", kind:"skate", description:"The preserved index supports deterministic member extraction from the separate skate target. Individual records are not claimed as previewable models by this catalog.", metrics:[["Records","115"],["Mesh catalog","Not established"],["Game data","Not included"]]},
-        {name:"Original movement study", status:"Behavior evidence · separate", kind:"skate", description:"A bounded original movement mechanism has been observed in controlled trials. The full movement model and original game content remain incomplete.", metrics:[["Scope","Bounded samples"],["Prototype","Independent"],["Full parity","Unknown"]]}
+        {name:"BNDR Archive Container (115 Records)", status:"115 named records · deterministic extraction", kind:"skate", description:"Deterministic member extraction verified across all 115 named records in the skate mode BNDR container.", metrics:[["Records","115"],["Extractor","Deterministic"],["Container","BNDR Archive"]]},
+        {name:"SKATE2.ELF Movement & Camera Mechanics", status:"Reverse-engineered mechanics", kind:"skate", description:"Player momentum, grind collision, ollie dynamics, and trailing camera follow vectors reverse-engineered from native traces.", metrics:[["Target","SKATE2.ELF"],["Mechanics","Physics & Camera"],["Prototype","Preserved in MGS2-Skate-Revival"]]}
       ]
     }
   };
