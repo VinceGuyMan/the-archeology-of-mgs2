@@ -10,3 +10,5 @@
 @media(max-width:440px){.guide-row .note-title{font-size:20px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
 @media print{.site-header,canvas,.motion-controls,.specimen-bottom,.bit-workbench,.passport-button,dialog,.toast{display:none!important}.hero,.section{display:block;padding:25px}.hero h1{font-size:60px}.evidence-ladder{grid-template-columns:repeat(2,1fr)}body{background:white;color:black}.bit-section,footer{background:white;color:black}footer p{color:black}}
+.brand-mark{display:block;width:48px;height:48px;flex:0 0 auto}.closing-mark{display:block;width:50px;height:50px;margin:0 auto 20px}.ticker .ticker-separator{font-size:15px;line-height:1;color:var(--orange)}
+@media(max-width:780px){.brand-mark{width:43px;height:43px}.closing-mark{width:45px;height:45px}}
