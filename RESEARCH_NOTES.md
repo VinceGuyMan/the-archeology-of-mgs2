@@ -1,6 +1,6 @@
 # Research Notes
 
-Research snapshot: October 17, 2026.
+Research snapshot: October 18, 2026. Read the [latest field notes](PROGRESS_2026-10-18.md) first; the specimen discussion below preserves the earlier October 17 milestone and is superseded where the newer notes identify broader qualified coverage.
 
 The primary target is the original GOG PC release of Metal Gear Solid 2: Substance. Findings from PS2, HD Collection and Master Collection are useful leads; they become GOG findings only after the relevant structure or behavior is independently checked.
 

@@ -11,11 +11,11 @@ The demos use synthetic data and original graphics. They do not run MGS2, load y
 | Area | Status |
 |---|---|
 | Original GOG PC version | Partial research, explained through public notes and original demos. |
-| PS2 versions | Coming soon. |
-| Trials and demos | Coming soon. |
-| Skateboarding | Coming soon. |
+| PS2 versions | Preserved research summarized in the latest field notes; interactive room planned. |
+| Trials and demos | Actor, asset and modification research preserved; new candidates need native tests. |
+| Skateboarding | Executable/archive research preserved; interactive room planned. |
 
-The current GOG research specimen covers 21 animation channels, 22 model parts and 16 conditional offline samples. A separate Blender check confirmed 1,926 of 1,932 source triangles in one specimen. These are bounded research results. They do not establish native game playback, a complete character exporter or general compatibility across editions.
+Read the [October 18 field notes](PROGRESS_2026-10-18.md) for the newer full body-cycle specimen, three-action arms study, Codec authoring, preserved PS2/trial/skate findings and Universal Modder assessment. Earlier 16-sample and partial-triangle results remain historical milestones. These bounded results do not establish native game playback, a complete character exporter or general compatibility across editions.
 
 See [Research Notes](RESEARCH_NOTES.md) for evidence boundaries and community credits, and [Contributing](CONTRIBUTING.md) for the public-content rules.
 
