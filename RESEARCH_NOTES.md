@@ -17,7 +17,7 @@ The public demonstrations are newly authored teaching examples using synthetic d
 
 Authentic actor selection, active layers and masks, runtime math dispatch, world placement, collision-dependent movement and general clip/export coverage still require evidence. Custom missions, in-game dialogue, independently controlled actors and a complete compatible runtime remain research ambitions.
 
-PS2 versions, trials, demos and skateboarding have **Coming soon** sections. That label describes planned coverage, not completed functionality or a delivery date.
+PS2 versions, trials, demos and skateboarding have separate catalog sections. The trial section lists four static model records; the skate section lists the 115-record BNDR inventory without claiming recovered model geometry; the PS2 section makes its current public model-evidence gap explicit. The viewer's default geometry is synthetic, and visitor-selected GLTF/GLB files stay in the browser.
 
 ## Community research we learned from
 

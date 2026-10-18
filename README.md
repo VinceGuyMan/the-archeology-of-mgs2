@@ -4,16 +4,18 @@ An independent, educational look at how Metal Gear Solid 2 works. Explore the id
 
 **[Visit the interactive museum](https://vinceguyman.github.io/the-archeology-of-mgs2/)** · [Browse the source](https://github.com/VinceGuyMan/the-archeology-of-mgs2)
 
-The demos use synthetic data and original graphics. They do not run MGS2, load your game files or reproduce a complete game engine.
+The default previews use synthetic data and original graphics. The model catalog can also inspect static geometry from a GLTF/GLB you select on your device; the files stay in your browser tab and are never uploaded. The site does not read game archives, run MGS2 or reproduce a complete game engine.
 
 ## What is here
 
 | Area | Status |
 |---|---|
-| Original GOG PC version | Partial research, explained through public notes and original demos. |
-| PS2 versions | Preserved research summarized in the latest field notes; interactive room planned. |
-| Trials and demos | Actor, asset and modification research preserved; new candidates need native tests. |
-| Skateboarding | Executable/archive research preserved; interactive room planned. |
+| Original GOG PC version | 45 rigid KMY specimens qualified; alternate layouts remain separate. |
+| PS2 versions | Separate target notes and a local-only geometry viewer; no PS2 meshes are bundled. |
+| Trials and demos | Four static model records are catalogued; source meshes and textures remain local. |
+| Skateboarding | 115 named BNDR records indexed; no extracted model preview is claimed. |
+
+Open the [interactive model catalogs](catalog.html) to browse findings, orbit synthetic teaching proxies, and inspect a local GLTF/GLB. A local import can be cleared at any time; no file is sent to a server or saved by the page.
 
 Read the [October 18 field notes](PROGRESS_2026-10-18.md) for the newer full body-cycle specimen, three-action arms study, Codec authoring, preserved PS2/trial/skate findings and Universal Modder assessment. Earlier 16-sample and partial-triangle results remain historical milestones. These bounded results do not establish native game playback, a complete character exporter or general compatibility across editions.
 

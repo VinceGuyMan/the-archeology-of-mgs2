@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#233d35">
+  <meta name="description" content="Browse evidence-backed MGS2 model catalogs and inspect synthetic teaching proxies or geometry from files on your own device.">
+  <title>Model catalogs — The Archeology of MGS2</title>
+  <link rel="icon" href="favicon.svg?v=20261018-archaeology-mark" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=20261018-archaeology-mark">
+  <link rel="stylesheet" href="catalog.css">
+  <script src="catalog.js" defer></script>
+</head>
+<body class="catalog-page">
+  <a class="skip" href="#main">Skip to the catalog</a>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="The Archeology of MGS2 home"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><rect x="5" y="5" width="54" height="54" rx="10" fill="#233d35"/><path d="M15 20h34M15 31h34M15 42h13m11 0h13" fill="none" stroke="#f0eddf" stroke-width="4" stroke-linecap="round"/><circle cx="34.5" cy="42" r="4.5" fill="#db542d"/></svg><span>THE ARCHEOLOGY<br><b>OF MGS2</b></span></a>
+    <nav aria-label="Main navigation"><a href="index.html#expeditions">The digs</a><a href="catalog.html" aria-current="page">Catalogs</a><a href="index.html#motion-table">Play</a><a href="PROGRESS_2026-10-18.md">Field notes</a></nav>
+  </header>
+
+  <main id="main">
+    <section class="catalog-intro">
+      <p class="eyebrow">05 / OPEN THE SPECIMEN DRAWERS</p>
+      <h1>Model catalogs.<br><em>Evidence first.</em></h1>
+      <p class="catalog-lede">Explore what the research has actually identified across GOG PC, PS2, trial releases, and the skate mode. Each edition stays in its own lane.</p>
+      <div class="catalog-boundary"><span aria-hidden="true">↳</span><p><strong>Bring your own local model.</strong> The viewer can inspect static geometry from a GLTF/GLB you select on this device. It reads the files in this browser tab and never uploads or saves them. The public site includes no extracted models, textures, game files, or captures.</p></div>
+    </section>
+
+    <section class="catalog-room" id="catalog-picker" aria-labelledby="catalog-room-title">
+      <div class="catalog-room-heading">
+        <div><p class="eyebrow">THE MODEL INDEX</p><h2 id="catalog-room-title">Pick a specimen.</h2></div>
+        <p id="catalog-summary">A small record can still tell a big story. Open an entry to inspect its evidence and a synthetic structural proxy.</p>
+      </div>
+      <div class="catalog-tabs" role="tablist" aria-label="Model catalogs">
+        <button class="catalog-tab" id="catalog-tab-gog" role="tab" aria-selected="true" aria-controls="catalog-panel" data-edition="gog"><span>01</span> GOG PC</button>
+        <button class="catalog-tab" id="catalog-tab-ps2" role="tab" aria-selected="false" aria-controls="catalog-panel" data-edition="ps2" tabindex="-1"><span>02</span> PS2</button>
+        <button class="catalog-tab" id="catalog-tab-trials" role="tab" aria-selected="false" aria-controls="catalog-panel" data-edition="trials" tabindex="-1"><span>03</span> Trial releases</button>
+        <button class="catalog-tab" id="catalog-tab-skate" role="tab" aria-selected="false" aria-controls="catalog-panel" data-edition="skate" tabindex="-1"><span>04</span> Skate mode</button>
+      </div>
+      <div class="catalog-layout" id="catalog-panel" role="tabpanel" aria-labelledby="catalog-tab-gog" tabindex="0">
+        <aside class="catalog-index" aria-label="Catalog entries">
+          <div class="index-heading"><div><p class="eyebrow" id="catalog-kicker">GOG PC / RETAIL</p><h3 id="catalog-title">Qualified specimens</h3></div><span class="catalog-count" id="catalog-count">5 records</span></div>
+          <div class="catalog-stats" id="catalog-stats"></div>
+          <label class="search-label" for="catalog-search">Filter this catalog</label>
+          <input id="catalog-search" type="search" placeholder="Name or evidence…" autocomplete="off">
+          <div id="catalog-results" class="catalog-results" role="listbox" aria-label="Specimens"></div>
+        </aside>
+
+        <section class="specimen-viewer" aria-label="Interactive specimen preview">
+          <div class="viewer-heading">
+            <div><p class="eyebrow" id="viewer-label">SYNTHETIC TEACHING PROXY</p><h3 id="specimen-name">Loading catalog…</h3></div>
+            <span id="specimen-state" class="status-pill">METADATA VIEW</span>
+          </div>
+          <div class="canvas-frame">
+            <canvas id="specimen-canvas" tabindex="0" role="img" aria-label="Interactive synthetic geometry proxy" aria-describedby="viewer-help"></canvas>
+            <span class="canvas-axis" aria-hidden="true">Y ↑<br><small>← X · Z ↗</small></span>
+            <span class="canvas-stamp" aria-hidden="true">LOCAL VIEW / NO GAME DATA</span>
+          </div>
+          <p id="viewer-help" class="viewer-help">Drag to orbit · scroll to zoom · select a record to read its measurements.</p>
+          <div class="viewer-controls" role="group" aria-label="Preview controls">
+            <button id="auto-spin" type="button" aria-pressed="false">Start rotation</button>
+            <button id="wireframe" type="button" aria-pressed="false">Show wireframe</button>
+            <button id="reset-view" type="button">Reset view</button>
+          </div>
+          <div class="selected-record">
+            <div><p class="eyebrow">FIELD RECORD</p><h4 id="record-title">—</h4><p id="record-description"></p></div>
+            <dl id="record-metrics" class="record-metrics"></dl>
+          </div>
+          <div class="local-import">
+            <div><p class="eyebrow">YOUR FILES / THIS DEVICE ONLY</p><h4>Load a local model</h4><p>Select a GLB, or a GLTF together with its referenced BIN file. The preview reads geometry only; materials, textures, skinning, animation, and native game behavior are not reproduced.</p></div>
+            <label class="file-button" for="local-model-files">Choose GLTF / GLB files</label>
+            <input id="local-model-files" type="file" accept=".gltf,.glb,.bin,model/gltf+json,model/gltf-binary" multiple>
+            <button id="clear-local-model" type="button" disabled>Clear local model</button>
+          </div>
+          <p id="import-status" class="import-status" role="status" aria-live="polite">Synthetic teaching proxy ready. No game geometry is loaded.</p>
+          <p id="catalog-boundary" class="catalog-note"></p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="catalog-footer"><p><strong>Follow the evidence. Keep the originals intact.</strong> This is an independent educational project. Game assets remain with their respective rights holders; third-party formats and tools keep their own licenses.</p><a href="index.html">Back to the museum ↗</a></footer>
+</body>
+</html>
