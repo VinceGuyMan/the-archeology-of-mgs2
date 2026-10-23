@@ -28,6 +28,16 @@
 .document-model-note p:last-child{max-width:650px;font-size:11px;line-height:1.8;color:#d8e0d7;margin:0}
 .document-model-note a{flex-shrink:0;color:#f4aa8b}
 .storyboard-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.document-filters{display:flex;align-items:end;gap:18px;flex-wrap:wrap;padding:20px;background:var(--paper-light);border:1px solid var(--line);margin-bottom:24px}
+.document-filters[hidden],.storyboard-record[hidden],[data-specimen-group][hidden]{display:none}
+.document-filters label{display:grid;gap:8px;font:10px/1.7 var(--mono)}
+.document-filters label:last-of-type{flex:1;min-width:190px}
+.document-filters input,.document-filters select{width:100%;min-height:42px;padding:10px 12px;border:1px solid var(--ink);border-radius:0;background:var(--paper);color:var(--ink);font:12px var(--sans)}
+.document-filters select:focus-visible{outline:3px solid var(--orange);outline-offset:5px}
+#document-record-count{font:10px/1.7 var(--mono);margin:0 0 11px}
+#document-empty{padding:24px;border:1px solid var(--line);font-size:13px}
+.specimen-group+.specimen-group{margin-top:35px}
+.storyboard-record .record-link{display:inline-block;font:10px/1.7 var(--mono);margin-top:15px}
 .storyboard-heading{margin-top:35px;margin-bottom:18px}
 .storyboard-record{background:var(--paper-light);padding:23px;border:1px solid var(--line)}
 .storyboard-record h3{font:26px/1.2 var(--serif);margin:11px 0 12px}

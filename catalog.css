@@ -80,3 +80,4 @@
 @media(max-width:390px){.catalog-tabs .catalog-tab{gap:6px;font-size:9px;padding:9px 7px}.catalog-results{grid-template-columns:1fr}.catalog-count{font-size:8px}.canvas-stamp{font-size:7px}.catalog-page .site-header nav{gap:6px}.catalog-page .brand{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.catalog-page *{scroll-behavior:auto!important;transition:none!important}}
 @media(max-width:680px){.catalog-tab:nth-child(even){border-right:0}.catalog-tab:nth-child(-n+4){border-bottom:1px solid var(--line)}.catalog-tab:last-child{grid-column:1/-1}}
+@media(max-width:680px){.viewer-heading{flex-direction:column;align-items:stretch}.viewer-heading .status-pill{align-self:start;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.5}}

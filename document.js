@@ -1,4 +1,30 @@
-/* Local PNG inspection only. No archive access, network upload, or persistence. */
+/* Metadata filters and local PNG inspection. No archive access or uploads. */
+(() => {
+  "use strict";
+  const controls = document.getElementById("document-filters");
+  const kind = document.getElementById("document-filter");
+  const search = document.getElementById("document-record-search");
+  const count = document.getElementById("document-record-count");
+  if (!controls || !kind || !search || !count) return;
+  const records = Array.from(document.querySelectorAll("[data-specimen-kind]"));
+  const groups = Array.from(document.querySelectorAll("[data-specimen-group]"));
+  function filterRecords() {
+    const term = search.value.trim().toLocaleLowerCase();
+    let visible = 0;
+    for (const record of records) {
+      record.hidden = (kind.value !== "all" && record.dataset.specimenKind !== kind.value) || !record.textContent.toLocaleLowerCase().includes(term);
+      if (!record.hidden) visible++;
+    }
+    for (const group of groups) group.hidden = !Array.from(group.querySelectorAll("[data-specimen-kind]")).some(record => !record.hidden);
+    count.textContent = visible + " of " + records.length + " specimens";
+    document.getElementById("document-empty").hidden = visible !== 0;
+  }
+  kind.addEventListener("change", filterRecords);
+  search.addEventListener("input", filterRecords);
+  controls.hidden = false;
+  filterRecords();
+})();
+
 (() => {
   "use strict";
   const input = document.getElementById("local-storyboard");

@@ -1,6 +1,6 @@
 # Research Notes
 
-The [Document USA room](document.html) and [October 23 field notes](DOCUMENT_RESEARCH.md) add a separate PS2 source track with three model and three storyboard samples. Its archive, image-layout, and visual identifications keep their own evidence scope; GOG, Trial, and Skateboarding results are not transferred to Document.
+The [Document USA room](document.html) and [October 23 field notes](DOCUMENT_RESEARCH.md) add a separate PS2 source track with eleven model specimens and eleven storyboard sheets. Nine model position multisets match GOG references; Campbell adds 22 distinct cap triangles, and a Fatman-linked component remains separate from its unsupported main actor. New storyboard captions preserve authored interaction and dog-tag design notes. These are static findings and bounded catalog comparisons; GOG, Trial, and Skateboarding runtime results are not transferred to Document.
 
 Research snapshot: October 18, 2026. Read the [latest field notes](PROGRESS_2026-10-18.md) first; the specimen discussion below preserves the earlier October 17 milestone and is superseded where the newer notes identify broader qualified coverage.
 

@@ -2,7 +2,7 @@
 
 October 23, 2026 · USA PS2 disc · `SLUS_205.43` · static and diagnostic evidence
 
-The Document of Metal Gear Solid 2 has its own [exhibition room](document.html) and [model catalog](catalog.html?edition=document). This branch records an independently identified disc, three decoded model specimens, and three decoded storyboard sheets. Extracted game files, image previews, geometry exports, and native decompiler listings remain outside this public repository.
+The Document of Metal Gear Solid 2 has its own [exhibition room](document.html) and [model catalog](catalog.html?edition=document). This branch records an independently identified disc, eleven decoded model specimens and eleven decoded storyboard sheets. The model count includes ten character studies and one effect component; it does not count complete native actors. Extracted game files, image previews, geometry exports, and native decompiler listings remain outside this public repository.
 
 ## Source passport
 
@@ -18,7 +18,7 @@ The ISO9660 inventory contains 15 regular files. The two stage archives contain 
 
 Extraction opens the original ISO read-only and writes into a separate local research workspace. Archive extents, member hashes, exact zlib output lengths, and source-preservation receipts bind these specimens to this disc. No ISO modification or emulator test is part of this result.
 
-## Three model specimens
+## First three model specimens
 
 | Stage / resource | Visual identification | Source bytes | Hierarchy records | Mesh definitions | Strip entries | Decoded triangles |
 |---|---|---:|---:|---:|---:|---:|
@@ -36,7 +36,7 @@ These counts describe a bounded diagnostic geometry decode. Strip entries includ
 
 Diagnostic exports do not establish complete actor assembly, native skinning, equipment attachment, animation playback, or final material appearance. Source-RGB model previews and their transparency treatment remain diagnostic; native alpha and hair rendering need their own reference checks. The public catalog shows original teaching proxies. Its local GLTF/GLB inspector can display geometry selected by a visitor without uploading or saving it.
 
-## Three storyboard sheets
+## First three storyboard sheets
 
 | Stage / resource | Decoded pixels | Identification and basis |
 |---|---|---|
@@ -55,6 +55,85 @@ Type numbers in these notes are decimal: type 19 is hexadecimal `0x13`. Producti
 The sampled images use PSMT4 indexed pixels and a 32-bit CSM0 palette. The strict existing Trial texture parser rejected their palette extent; the Document decoder admits the observed 8,192-byte palette tail while leaving the differing header word's meaning unresolved. The previews retain source RGB and force alpha to 255 because all sampled source alpha values are zero. This produces readable diagnostic images; native color, alpha, cropping, and display framing still need comparison with the original viewer.
 
 The Document room's local PNG inspector displays a file the visitor already has. It does not read an ISO, extract a resource, establish provenance from a filename, or send the image to a server.
+
+## Eight additional model specimens
+
+The second batch retains the first three specimens and adds the following type-4 resources. Counts use the same hierarchy/strip/triangle conventions. All names are visual identifications or bounded source-family correlations. A named GOG comparison does not recover the original Document filename.
+
+| Stage / resource | Identification | Source bytes | Hierarchy records | Mesh definitions | Strip entries | Decoded triangles |
+|---|---|---:|---:|---:|---:|---:|
+| `cmdl03 / 53f7f1` | Otacon | 179,440 | 53 | 195 | 4,538 | 2,628 |
+| `cmdl04 / 533701` | Sergei Gurlukovich | 200,336 | 56 | 195 | 4,832 | 2,810 |
+| `cmdl05 / 48346b` | Colonel Campbell radio bust | 116,720 | 53 | 140 | 2,759 | 1,583 |
+| `cmdl06 / 5425b1` | Rose | 228,160 | 53 | 226 | 5,625 | 3,307 |
+| `cmdl07 / 7d76c2` | Emma, bandaged variant | 254,544 | 87 | 290 | 6,130 | 3,592 |
+| `cmdl08 / 643f41` | Olga-linked armored variant | 233,920 | 53 | 234 | 5,374 | 3,026 |
+| `cmdl09 / 543595` | Solidus, base armored model | 283,280 | 53 | 275 | 6,616 | 3,916 |
+| `cmdl10 / eb4887` | Fatman-linked blood/ooze effect component | 7,664 | 58 | 5 | 112 | 64 |
+
+Otacon's face, dark hair and pale jacket, Sergei's moustache, fur collar and camouflage, Rose's face and business suit, Emma's blood-stained bandage, and Solidus's face and armor were inspected in source-derived static diagnostics. The Campbell bust has a legible **CAMPBELL** nameplate. Its `48346b` identifier has no basename match among the 3,493 observed GOG stems in the name audit. The Olga-linked record correlates with literal `org_tng_mh_mt`; its precise narrative scene and native variant identity remain qualified. The literal Emma `addhand` name is a lead, not a verified hand-attachment behavior.
+
+The Fatman-linked resource is an effect component, not the Fatman actor. The sampled source pixels have alpha below the diagnostic cutout threshold of 128, so that cutout preview is blank. Neutral and opaque diagnostics expose the small static geometry; native effect appearance remains unknown. The main Fatman model meshes failed the unchanged strict flags-2264 gate and are not counted as a decoded actor.
+
+| Source member | SHA-256 |
+|---|---|
+| `cmdl03 / 53f7f1` | `07b94b92ff281219458c0ace524012b2b5f0d02b79c0d13afcf96cabf81268da` |
+| `cmdl04 / 533701` | `b70e3a6e9cee1a69c4efb4ee5a05b77d6898bbc3db6a7cc955daefa8be993701` |
+| `cmdl05 / 48346b` | `f80b3ad14a43a3625a7b5254d18edec28517bd6615c952e1b365168ba5867f43` |
+| `cmdl06 / 5425b1` | `c78298d060b877b01f73ca9600e54437453427ad1a9ed9e74d54c3ec5f0d7beb` |
+| `cmdl07 / 7d76c2` | `88bda44d7435b7a794612e3e090eb72840b09fd5e029ba72f9c4c92dffefe722` |
+| `cmdl08 / 643f41` | `2e1fe844c5d3753e377fa0fdac70727f14368d945fe82f0a98978bcf1b7c4aaa` |
+| `cmdl09 / 543595` | `f392c134875d8529ed7c0ca8233ff22d1cf055daea17b40bc72a42229c5640cd` |
+| `cmdl10 / eb4887` | `cd3ba9ff71ef89c767814e55ee96cada6cc5ab084f95833513747f5578cef3af` |
+
+### Shared geometry and a measured difference
+
+| Document specimen | GOG comparison | Position-triangle result |
+|---|---|---|
+| Otacon | `otc_def_mh_mt.evx` | Exact multiset, 2,628 / 2,628 |
+| Sergei Gurlukovich | `crg_def_mh_mt.evx` | Exact multiset, 2,810 / 2,810 |
+| Campbell radio bust | `cam_radio_mh_mt.evx` | 1,561 / 1,583 Document triangles; all 1,561 GOG reference triangles present |
+| Rose | `ros_def_mh_mt.evx` | Exact multiset, 3,307 / 3,307 |
+| Emma, bandaged | `ema_houtai_addhand_mh_mt.evx` | Exact multiset, 3,592 / 3,592 |
+| Olga-linked armor | `org_tng_mh_mt.evx` | Exact multiset, 3,026 / 3,026 |
+| Solidus | `sol_def_mh_mt.evx` | Exact multiset, 3,916 / 3,916 |
+| Fatman-linked component | `fat_ooze_blood_mh.evx` | Exact multiset, 64 / 64 |
+
+Campbell is the clearest new topology difference from a specific GOG reference. Document retains every reference triangle and adds 22 distinct triangles closing the torso and sleeve boundaries. Those triangles use existing XYZ points; there are no new XYZ positions. This establishes an extra set of cap triangles relative to `cam_radio_mh_mt.evx`, not global Document exclusivity. Across both batches, nine of eleven specimens have an exact GOG position-triangle multiset and two have partial overlap.
+
+The second-batch GOG comparison admits all 365 unique EVX members, including their indexed layouts, and checks 3,922 KMY members for source digests. None of the eight Document source-member hashes matches those GOG inventories. The metric remains the signed-i16 XYZ triangle multiset described below; matching positions do not establish matching binary layout, hierarchy, normals, weights, UVs, textures or animation.
+
+The Trial comparison checks 2,987 stored member records from the stage/face caches. None of the eight source digests matches. Two same-hash Sergei EVM references each share 800 of 2,810 Document triangles (28.47%); their position multisets differ. No same-hash EVM reference was found for the other seven new specimens. This is a cached-inventory and same-hash geometry search, not a comparison with every Trial model or a fresh scan of source installations.
+
+## Eight additional storyboard sheets
+
+These type-19 images extend the first three sheets to eleven retained specimens. The scene labels below come from decoded drawings and manually read captions. Production identifiers are visible labels, not recovered original filenames.
+
+| Stage / resource | Decoded pixels | Identification and evidence |
+|---|---|---|
+| `sbrd01t / b90f35` | 698 × 1,024 | Tanker on the Hudson. Vessel-and-river drawings, camera-dolly arrows, and script naming the Hudson, Snake and Otacon. Exact ship identity and final framing remain unverified. |
+| `sbrd08t / b910f5` | 698 × 1,024 | Armed figure at tanker rail, with smaller rail-framed and waist-up drawings. Olga is a visual candidate only; the selected sheet does not visibly name the character. |
+| `sbrd17t / b917b5` | 698 × 1,024 | RAY at the waterline. A mechanical form and successive waterline panels accompany script explicitly naming RAY. No recovered model or final-shot association is established. |
+| `sbrd00p / d3e98f` | 316 × 928 | Helicopters and the Big Shell introduction. Helicopter, aerial-roadway and uniformed-personnel drawings; Raiden and Colonel dialogue labels and a Big Shell reference. |
+| `sbrd23p / 9de990` | 296 × 944 | Raiden confronting the ninja. Gun, blade and masked-face panels accompany script naming Olga in the visor/face note. This is production intent, not proof of a native transparency effect. |
+| `sbrd47p / 1fe990` | 292 × 602 | Vamp sinks into the pool, reference `P057_01_P01`. The production heading names the battle's end and the script describes Raiden's victory and Vamp sinking. |
+| `sbrd71p / 8aead4` | 302 × 696 | Arsenal interrogation, reference `P070_22_I02`. Restrained Raiden and a second figure, Raiden/Olga dialogue labels, a Listen annotation and a LIFE-decrease note. |
+| `sbrd93p / d5ea1d` | 290 × 662 | Dog tags with Raiden and Snake. The script lists user-entered name, age, sex and blood type, and a maximum name length of 12 characters. |
+
+The Listen prompt, LIFE change and dog-tag fields are authored design evidence. They have not been tested against shipped interaction, input handling or native game behavior. The first type-19 candidate in `sbrd00p`, `sbrd23p` and `sbrd93p` failed the existing strict texture-boundary contract; the second candidate was decoded. The decoder was not relaxed to admit those failures. Display alpha is forced opaque while retaining source RGB, so native alpha, cropping, color and framing remain unverified.
+
+| Source image member | SHA-256 |
+|---|---|
+| `sbrd01t / b90f35` | `6e5b1a77ad1edb1f97bc79fd6d6feb6a9a8a617dd77e18fdff827e0c3d8248f2` |
+| `sbrd08t / b910f5` | `a0de5c05742403cfb566c8dcbba45d66aaf6371b0e3f7ea884ac413df389f98c` |
+| `sbrd17t / b917b5` | `4e880842c3628707029e26a29fc8583aa0ee0a7a40be01b6f690701409e53d3f` |
+| `sbrd00p / d3e98f` | `27ad4698d52c9bc44403c1f2527de1ca7d73d3aee5d12590cfb9f4b48856902b` |
+| `sbrd23p / 9de990` | `ef429e7a6d964f50bcc213f9b34f7f1d60c6a9d70ddf1779d843874c36249049` |
+| `sbrd47p / 1fe990` | `1ceb18b09b0f3122562952cf9309bc15eb0a55b7bf7b60bcd8baf6e920daa1f0` |
+| `sbrd71p / 8aead4` | `9594ebc3933c90f006fbe8340dbcd2b7d6280d1d9f91ed53e0a60422b01ce7c9` |
+| `sbrd93p / d5ea1d` | `dc6ef73076800e5af996e2989f18b354f0d4276a6f337caabb7d7cfadb8fbcbe` |
+
+The eight source-payload hashes, decoded-pixel hashes and 24-bit ID/name-hash leads have no exact candidate in the six stored GOG/Trial catalogs described below. All eleven retained Document sheets differ from one another in source and decoded hashes. These are finite catalog and exact-hash comparisons. Differing catalog granularity, especially GOG QAR chunks versus individual textures, limits negative conclusions; no perceptual-image search or native cinematic alignment was performed. The result is **no match in the compared catalogs**, not proof of global Document exclusivity.
 
 ## Comparisons with the existing archaeology
 
@@ -102,6 +181,6 @@ Two saved Ghidra analyses used the Emotion Engine processor. Across bounded firs
 
 The archive implementation was independently derived against pinned primary [tools-mgs DAT source](https://raw.githubusercontent.com/Joy-Division/tools-mgs/4e9394baa8ac6872e66202ff0ce26352cd45bef9/dat-extract_enc.c) and [name-hash source](https://raw.githubusercontent.com/Joy-Division/tools-mgs/4e9394baa8ac6872e66202ff0ce26352cd45bef9/strcode/strcode.c), then corroborated against this disc's resident code. These references are credited evidence sources; their code is not copied into this exhibit.
 
-Native playback, complete stage code, menu-to-resource mappings, exact original filenames, faithful materials, animation, and shot-by-shot storyboard comparison remain open. The three models and three sheets are samples, not a claim of corpus-wide compatibility or a full decompilation.
+Native playback, complete stage code, menu-to-resource mappings, exact original filenames, faithful materials, animation, the rejected Fatman layouts, and shot-by-shot storyboard comparison remain open. Eleven model specimens and eleven sheets are bounded samples, not a claim of corpus-wide compatibility, complete actors, or a full decompilation.
 
 See the [research notes](RESEARCH_NOTES.md) for the project's evidence conventions and [Contributing](CONTRIBUTING.md) for the public-content boundary.
