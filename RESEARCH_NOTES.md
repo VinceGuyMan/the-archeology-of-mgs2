@@ -1,5 +1,7 @@
 # Research Notes
 
+The [Document USA room](document.html) and [October 23 field notes](DOCUMENT_RESEARCH.md) add a separate PS2 source track with three model and three storyboard samples. Its archive, image-layout, and visual identifications keep their own evidence scope; GOG, Trial, and Skateboarding results are not transferred to Document.
+
 Research snapshot: October 18, 2026. Read the [latest field notes](PROGRESS_2026-10-18.md) first; the specimen discussion below preserves the earlier October 17 milestone and is superseded where the newer notes identify broader qualified coverage.
 
 The primary target is the original GOG PC release of Metal Gear Solid 2: Substance. Findings from PS2, HD Collection and Master Collection are useful leads; they become GOG findings only after the relevant structure or behavior is independently checked.

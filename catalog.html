@@ -7,9 +7,9 @@
   <meta name="description" content="Browse evidence-backed MGS2 model catalogs and inspect synthetic teaching proxies or geometry from files on your own device.">
   <title>Model catalogs — The Archeology of MGS2</title>
   <link rel="icon" href="favicon.svg?v=20261018-archaeology-mark" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=20261018-archaeology-mark">
-  <link rel="stylesheet" href="catalog.css">
-  <script src="catalog.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261023-document">
+  <link rel="stylesheet" href="catalog.css?v=20261023-document">
+  <script src="catalog.js?v=20261023-document" defer></script>
 </head>
 <body class="catalog-page">
   <a class="skip" href="#main">Skip to the catalog</a>
@@ -22,7 +22,8 @@
     <section class="catalog-intro">
       <p class="eyebrow">05 / OPEN THE SPECIMEN DRAWERS</p>
       <h1>Model catalogs.<br><em>Evidence first.</em></h1>
-      <p class="catalog-lede">Explore what the research has actually identified across GOG PC, PS2, trial releases, and the skate mode. Each edition stays in its own lane.</p>
+      <p class="catalog-lede">Explore what the research has actually identified across GOG PC, PS2, trial releases, the skate mode, and Document. Each edition keeps its own evidence.</p>
+      <p><a class="text-link" href="document.html">New dig: The Document of MGS2 <span aria-hidden="true">↗</span></a></p>
       <div class="catalog-boundary"><span aria-hidden="true">↳</span><p><strong>Bring your own local model.</strong> The viewer can inspect static geometry from a GLTF/GLB you select on this device. It reads the files in this browser tab and never uploads or saves them. The public site includes no extracted models, textures, game files, or captures.</p></div>
     </section>
 
@@ -36,6 +37,7 @@
         <button class="catalog-tab" id="catalog-tab-ps2" role="tab" aria-selected="false" aria-controls="catalog-panel" data-edition="ps2" tabindex="-1"><span>02</span> PS2</button>
         <button class="catalog-tab" id="catalog-tab-trials" role="tab" aria-selected="false" aria-controls="catalog-panel" data-edition="trials" tabindex="-1"><span>03</span> Trial releases</button>
         <button class="catalog-tab" id="catalog-tab-skate" role="tab" aria-selected="false" aria-controls="catalog-panel" data-edition="skate" tabindex="-1"><span>04</span> Skate mode</button>
+        <button class="catalog-tab" id="catalog-tab-document" role="tab" aria-selected="false" aria-controls="catalog-panel" data-edition="document" tabindex="-1"><span>05</span> Document</button>
       </div>
       <div class="catalog-layout" id="catalog-panel" role="tabpanel" aria-labelledby="catalog-tab-gog" tabindex="0">
         <aside class="catalog-index" aria-label="Catalog entries">
@@ -54,7 +56,7 @@
           <div class="canvas-frame">
             <canvas id="specimen-canvas" tabindex="0" role="img" aria-label="Interactive synthetic geometry proxy" aria-describedby="viewer-help"></canvas>
             <span class="canvas-axis" aria-hidden="true">Y ↑<br><small>← X · Z ↗</small></span>
-            <span class="canvas-stamp" aria-hidden="true">LOCAL VIEW / NO GAME DATA</span>
+            <span class="canvas-stamp" id="canvas-stamp" aria-hidden="true">SYNTHETIC TEACHING PROXY</span>
           </div>
           <p id="viewer-help" class="viewer-help">Drag to orbit · scroll to zoom · select a record to read its measurements.</p>
           <div class="viewer-controls" role="group" aria-label="Preview controls">

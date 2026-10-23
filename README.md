@@ -14,8 +14,11 @@ The default previews use synthetic data and original graphics. The model catalog
 | PS2 versions | Regional binary mappings (SLED-50117 / Retail), VU1 microcode pipeline disassembly, and texture swizzle audits. |
 | Trials and demos | Verified gameplay route swaps (Olga all-room, Opening Bridge04, bloodied Snake, soldier), 464 passing repository tests. |
 | Skateboarding | 115 named BNDR records indexed, SKATE2.ELF analyzed, and movement mechanics reverse-engineered. |
+| The Document of MGS2 (USA) | Separate SLUS-20543 source track; 442 + 14 stage entries, three decoded model specimens, and three decoded storyboard sheets. Static findings and bounded comparisons. |
 
 Open the [interactive model catalogs](catalog.html) to browse findings, orbit synthetic teaching proxies, and inspect a local GLTF/GLB. A local import can be cleared at any time; no file is sent to a server or saved by the page.
+
+Open the [Document exhibition room](document.html) for the October 23 model and storyboard specimens, source passport, edition comparisons, and a local PNG inspector. [Document field notes](DOCUMENT_RESEARCH.md) record exact member identities and evidence limits. Extracted models and images remain outside this publication, following the same rules as the other versions.
 
 Read the [October 18 field notes](PROGRESS_2026-10-18.md) for the newer full body-cycle specimen, three-action arms study, Codec authoring, preserved PS2/trial/skate findings and Universal Modder assessment. Earlier 16-sample and partial-triangle results remain historical milestones. These bounded results do not establish native game playback, a complete character exporter or general compatibility across editions.
 

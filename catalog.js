@@ -91,6 +91,18 @@
         {name:"Olga Single Mesh · org_sgl.kms", status:"Target room retest pending", kind:"character", description:"Single-mesh character model (a1d1984e...). Existing builds target w00b or w01e; New Game starts in w00a which explains non-visibility upon initial boot.", metrics:[["Parts","1"],["Vertices","2,150"],["Triangles","1,100"],["Target Stage","w00b / w01e"],["State","Target room retest pending"]]}
       ]
     },
+    document: {
+      kicker: "DOCUMENT / USA / SLUS-20543",
+      title: "Three static character specimens",
+      summary: "Three model samples have bounded geometry exports: Raiden, Snake, and an IRO skull candidate. Snake and the masked soldier each match a GOG raw-position triangle multiset. The dedicated Document room also records three decoded storyboard sheets.",
+      stats: [["3", "model samples decoded"], ["3", "storyboard sheets decoded"], ["442 + 14", "Document + secondary stages"], ["Static", "native behavior untested"]],
+      boundary: "Source: Document USA, DOCUMENT/STAGE.DAT. Counts describe the diagnostic decoder's hierarchy and strip entries, not complete actor assemblies or native rendering. Character names are visual identifications; original model filenames remain unresolved. No extracted geometry or textures are hosted here.",
+      entries: [
+        {name:"Raiden · cmdl00 / 541e99",status:"Static geometry · visual identification",kind:"character",description:"The source face pixels and decoded geometry identify Raiden. The 2,002 decoded triangles have only a 469-triangle raw-position overlap with GOG rai_def_mh_mt.evx. Original basename, native alpha, animation, and final material appearance remain unresolved.",metrics:[["Hierarchy records","21"],["Strip entries","3,402"],["Triangles","2,002"],["Source bytes","118,960"],["Resource ID","541e99 · type 4"],["GOG overlap","469 / 2,002 triangles"]]},
+        {name:"Snake · cmdl01 / 55aaa5",status:"Static geometry · GOG position match",kind:"character",description:"The preview shows Snake's bandana and suit. All 3,002 raw-i16 XYZ triangles match GOG sna_def_mh.evx; four same-ID Trial occurrences overlap by 2,995 triangles and differ. Binary digests differ. The metric ignores winding, order, normals, UVs, skin weights, and materials; native actor equivalence is untested.",metrics:[["Hierarchy records","53"],["Strip entries","5,158"],["Triangles","3,002"],["Source bytes","210,816"],["Resource ID","55aaa5 · type 4"],["GOG position match","3,002 / 3,002 triangles"]]},
+        {name:"IRO skull candidate · cmdl02 / 09274e",status:"Static geometry · GOG position match",kind:"character",description:"The diagnostic preview shows a masked tactical soldier. All 2,724 raw-i16 XYZ triangles match GOG iro_skull_mh_mt.evx, also shared by an iro_blood variant. Binary digests differ. The skull basename remains a candidate; geometry equality does not establish matching textures, rig, or native actor behavior.",metrics:[["Hierarchy records","53"],["Strip entries","4,758"],["Triangles","2,724"],["Source bytes","175,792"],["Resource ID","09274e · type 4"],["GOG position match","2,724 / 2,724 triangles"]]}
+      ]
+    },
     skate: {
       kicker: "SKATE MODE / SEPARATE PS2 TARGET",
       title: "Archive records & mechanics study",
@@ -210,6 +222,7 @@
     localGeometry = isLocal ? mesh : null;
     localModelName = isLocal ? name : "";
     setText("viewer-label", isLocal ? "LOCAL FILE / GEOMETRY ONLY" : "SYNTHETIC TEACHING PROXY");
+    setText("canvas-stamp", isLocal ? "LOCAL STATIC GEOMETRY" : "SYNTHETIC TEACHING PROXY");
     canvas.setAttribute("aria-label", isLocal ? "Static geometry preview loaded from a local file" : "Interactive synthetic teaching geometry proxy");
     document.getElementById("clear-local-model").disabled = !isLocal;
     dirty = true;

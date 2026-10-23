@@ -12,3 +12,5 @@
 @media print{.site-header,canvas,.motion-controls,.specimen-bottom,.bit-workbench,.passport-button,dialog,.toast{display:none!important}.hero,.section{display:block;padding:25px}.hero h1{font-size:60px}.evidence-ladder{grid-template-columns:repeat(2,1fr)}body{background:white;color:black}.bit-section,footer{background:white;color:black}footer p{color:black}}
 .brand-mark{display:block;width:48px;height:48px;flex:0 0 48px}.brand>span{white-space:nowrap}.closing-mark{display:block;width:50px;height:50px;margin:0 auto 20px}.ticker .ticker-separator{font-size:15px;line-height:1;color:var(--orange)}
 @media(max-width:780px){.brand-mark{width:43px;height:43px;flex-basis:43px}.closing-mark{width:45px;height:45px}}
+.edition-tabs{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:680px){.edition-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.edition-tabs button{border-bottom:1px solid var(--line)}.edition-tabs button:last-child{grid-column:1/-1;border-bottom:0}.edition-tabs strong{font-size:13px}.tab-status{font-size:7px}.edition-number{margin-bottom:4px}}
