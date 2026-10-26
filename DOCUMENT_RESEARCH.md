@@ -1,8 +1,97 @@
 # The Document of MGS2: field notes
 
-October 23, 2026 · USA PS2 disc · `SLUS_205.43` · static and diagnostic evidence
+October 26, 2026 · USA PS2 disc · `SLUS_205.43` · static and diagnostic evidence
 
-The Document of Metal Gear Solid 2 has its own [exhibition room](document.html) and [model catalog](catalog.html?edition=document). This branch records an independently identified disc, eleven decoded model specimens and eleven decoded storyboard sheets. The model count includes ten character studies and one effect component; it does not count complete native actors. Extracted game files, image previews, geometry exports, and native decompiler listings remain outside this public repository.
+The Document of Metal Gear Solid 2 has its own [exhibition room](document.html) and [model catalog](catalog.html?edition=document). The full corpus pass now indexes **3,945 records in the main model families, 150 supplemental geometry sources and 3,253 texture containers containing 59,485 decoded source RGB entries**. The catalog's 4,095 source records include separate point, line, cloth and memory-card-icon families. Fourteen storyboard sheets have individual visual/caption identifications. Resource and export counts do not count complete native actors. Extracted game files, image previews, geometry exports, and native decompiler listings remain outside this public repository.
+
+## Full corpus pass
+
+Both DAT archives were freshly parsed, extent-hashed and completely extracted. A separate verifier with an independent cipher/inflate implementation replayed all **456 stages, 948 groups and 20,087 member occurrences**, and rehashed all **8,551 distinct source payloads**. There are no failed archive groups or omitted numeric resource types. This establishes exhaustive archive extraction. Supplemental geometry has its own collection and evidence beyond the 3,945 recognized model records below. The source ISO was opened read-only; its identity and preservation checks remain separate from decoder semantics.
+
+The public [metadata index](document-corpus.json) links every reviewed model and texture-container shard with record count, byte length and SHA-256. The browser verifies shard hashes and whole-collection coverage before presenting a full list. Filters and 40-record pages keep the larger source catalog usable. The eleven original `cmdl00`–`cmdl10` links remain aliases into the complete catalog. These files contain research metadata only.
+
+| Model family | Logical records | Evidence and remaining limits |
+|---|---:|---|
+| EVM | 289 | Bounded source streams, including layouts rejected by the earlier sample decoder. Local positions do not establish complete actors, native pose or materials. |
+| KMS, including nested ZMS | 3,651 | Every identified source model and nested child has a static export and source ledger. Six retain part-local geometry with native assembly unverified. |
+| Physics 8020.0002 | 5 | Lossless outer LZSS unpacking, bounded float64 source polygons, authored scale/translation and static exports. One is stored under type 17 rather than type 12. |
+| **Total** | **3,945** | **3,934 static geometry records, six part-local records and five authored Physics polygon records.** |
+
+The source-model scope has 11,001 resource occurrences and 3,917 distinct source members. Nested children make the logical-model count larger than the source-member count. A zero-geometry placeholder inside an authored model is retained as an object record, not promoted to a separate actor.
+
+### What changed from the samples
+
+The main Fatman layout now decodes: `cmdl10 / 535eb5` has 3,096 triangles, and `d3bcdb` has 3,048. The earlier `eb4887` sample remains a separate 64-triangle blood/ooze effect component. The flags-2264 rejection is historical evidence of the first decoder's limit; it is no longer the current source-geometry status.
+
+The 2,045-triangle `cmdl01 / bb12a0` model now has a static menu binding to **“Solid Snake/Shinkawa touch experiment model”**. The 1,910-triangle purple-suited `cmdl26 / d8a464` figure binds to **“Mei Ling for Toon Shading Experiment”**. Both stage scripts contain complete nine-field menu metadata records, and their stage/resource pairs resolve title indices 69 and 63 through the same registered title group. The later of two adjacent main-script registrations selects global-object base 1: the resolved strings are objects 70 and 64. Native token, registration and lookup code corroborates that exact base-plus-index route. Source line-break controls are normalized to spaces in the display titles and retained exactly in the private proof. This is a source-backed menu identity, not observed native rendering or animation. Original basenames remain unrecovered; MGS1 provenance and global exclusivity are not established.
+
+Four of the five Physics containers exactly equal the compared GOG MDLs after removing only zero DAT alignment padding. All four also have exact unpacked-byte equality: `c4_kaitai_b1.mdl`, `c4_kaitai_b1_set.mdl`, `c4_kaitai_b1_frost_cm.mdl` and `c4_kaitai_b1_frost_cm_set.mdl`. A type-17 authored floor/wall/roof/decoration collection has no exact match in those four MDLs. It is a component collection, not a verified complete scene.
+
+### Comparison metrics and coverage
+
+For EVM/KMS, an exact match is a multiset of nondegenerate **local raw signed-i16 XYZ triangles**, with corners and triangles sorted and multiplicity preserved. It ignores winding, order, hierarchy, part origins/transforms, normals, UVs, weights, materials and runtime. All 3,922 distinct GOG KMY and 365 distinct GOG EVX geometry references are admitted to that comparison. **3,801** Document logical records have exact GOG matches. The four exact Physics unpacked comparisons use a separate source-polygon/container metric, giving **3,805** exact family-metric matches in total.
+
+**962** Document records have exact local-position matches against the **655** admitted distinct Trial EVM/KMS references. The Physics comparison freshly rehashes all **2,987** members in the stored Trial stage/face inventories; none carry a Physics model header or an exact raw Physics-container match. Same-name-hash partial candidates are retained for every model; all 139 signed-i16 models without exact GOG geometry matches also receive global GOG/Trial partial-overlap ranking. A missing exact match is scoped to these corpora, not proof of global Document exclusivity.
+
+### Supplemental source geometry
+
+All **136 CVY sources**, representing 433 occurrences, have independently checked source-local point exports: **73,730 float32 XYZ points across 1,237 nonempty parts**. The local inspector supports true glTF POINTS and draws dots without inventing faces. These are deformation/source-attribute arrays, not 136 additional complete actors or proven collision volumes.
+
+Three sources retain **37 unusable secondary UV streams** containing invalid indices or nonfinite words. The native stream selection and primary point evidence are independent; those secondary words remain explicit and are never expanded. Their verified primary XYZ exports retain a separate qualified status rather than forcing a UV read. The source index arrays have not been established as triangle topology.
+
+Against 161 distinct stored GOG and 65 distinct stored Trial CVY sources, **29** Document sources have exact GOG source-position multiset matches and **48** have exact Trial matches. Complete raw payloads match 0 GOG and 14 Trial sources; complete ordered attribute-array signatures match 0 GOG and 35 Trial sources. These are different metrics. Point equality normalizes negative zero and retains duplicate float32 XYZ values; it ignores topology, transforms, pose, weights, materials and runtime deformation. Supplemental source records and primitive counts stay separate from the 3,945 logical model records.
+
+All **10 ROL sources** now have native-backed outline layouts and true LINES exports, preserving **9,856 source vertices and 8,435 line segments** across 13 occurrences. Each object's strip counts, final-strip length and control-bit-zero connectivity determine the lines; object boundaries reset the previous vertex. No triangle fans are manufactured. Eighty malformed controls reject, and an independent export check compares every source vertex. Nine Document outlines have exact undirected line-geometry matches among all 82 distinct stored GOG ROL sources. None of the 24 searched Trial type-17 occurrences is a ROL source. The metric ignores line direction, object grouping, colors, transforms and native final rendering.
+
+The **RWV coat resource** binds 144 points from its same-ID CVY source to 235 source triangles, 378 edges and per-node coefficients. Every rest length agrees with the bound point distance within 7.5e-6, and its triangles exactly reproduce two existing Document KMS coat records. The native cloth reader corroborates the layout and same-ID KMS/RAW/CVY requests. The static bound export has no new standalone positions and does not reproduce cloth simulation or native pose. Its two exact GOG mesh correlations come through the matched KMS geometry; the compared GOG RWV source itself differs. These metrics remain separate in each source record.
+
+The **three FAR sources** are complete typed transform/sequence banks, with exact typed counterparts in the four-source GOG comparison scope; one also matches raw bytes directly. Their 32-channel pose and quaternion records do not create standalone meshes. **Seven RMT sources** are separately classified typed transform/property sample banks, with complete source-byte accounting and re-encoding. Named-source correlations retain literal abbreviations. Native actor binding, named bones, timing, interpolation and final animation playback remain unverified. These families have separate metadata records and do not inflate the model or supplemental geometry counts.
+
+### Texture coverage
+
+All **3,253** distinct type-19 containers, representing **5,905** source occurrences, decode into **59,485** source entry records and **14,524** distinct RGB images. Repeated stage occurrences contain 112,041 entry occurrences. Both PSMT4 and PSMT8 layouts are supported; no source RGB entries are rejected in this corpus. Native loader analysis corroborates the header's palette-transfer row declaration and 8,192-byte allocation rounding. Source RGB reconstruction does not prove native GS color, scaled alpha, clipping, blending or final materials. Four entries retain explicitly unadmitted source-alpha scaling.
+
+There are **4,900** exact GOG RGB-entry matches, representing **688** distinct Document RGB images, and **19,714** exact Trial RGB-entry matches, representing **2,588** distinct Document RGB images. Whole source-container hashes do not match the compared GOG/Trial texture payloads; storage and allocation differ. Same texture IDs, exact source RGBA bytes, decoded RGB and native material appearance remain distinct evidence.
+
+The **113** storyboard stages contain **654** distinct texture containers. None has an exact RGB-entry match in the compared GOG/Trial corpora. These stages also contain UI and unclassified images; 654 is not a count of identified storyboard sheets.
+
+| Newly resolved PSMT8 sheet | Source size | Visible reference | Identification |
+|---|---|---|---|
+| `sbrd00p / d3e98e` | 316 × 928 | `P001_01_p01` | Opening infiltration at Verrazano Bridge; bridge/helicopter sketches and revision notes. |
+| `sbrd23p / 9de98f` | 296 × 944 | `P036_01_p01` | Raiden at the stair landing and the ninja entrance; motion-capture and possible-battle notes. |
+| `sbrd93p / d5ea1c` | 292 × 662 | `P082_04_P03` | Snake notices Raiden's dog tags; Raiden removes them in the final panel. |
+
+These are three additional earlier pages, distinct from the retained later PSMT4 sheets. The old rejection records remain historical. Individually reviewed drawings and captions support these labels; final cinematic framing and shipped interaction remain untested.
+
+### Other image families
+
+Both 418-glyph fonts have decoded two-bit mask indices. One equals the compared GOG `keepfont.raw` after excluding eight zero DAT padding bytes. The other differs in exactly the 94 printable ASCII slots `0x21`–`0x7e`, with visibly heavier strokes; the remaining 324 slots match. Native caller-selected glyph colors and palettes remain unverified.
+
+A **separate fixed debug-font resource**, `34ca34`, has a 3,104-byte layout of sixteen 16-bit palette words plus 3,072 bytes of packed four-bit indices. A 256 × 24 diagnostic atlas reveals **96 cells of 8 × 8 pixels**, comprising 95 printable-ASCII sequence slots and a final symbol; two cells are blank. Every source byte and all 96 cropped cells are independently checked. Fourteen raw Trial occurrences share the exact source, while the compared GOG DAR catalog has no exact match. These are scoped raw comparisons. Atlas layout and cell order are source-backed diagnostic interpretations; native upload dimensions, palette/alpha, glyph lookup, spacing and final UI appearance remain unverified. This resource stays separate from the two 418-glyph banks and the type-19 texture-container count.
+
+Five Physics models contain **45** decoded DIB material records and **38** distinct RGB images, independently checked against Pillow. All **77** mapping records and **377** source polygons resolve their image IDs and dimensions. RGB-only local diagnostic exports retain both V interpretations; native UV orientation, lighting and extra-plane alpha semantics remain open. A separate RIM/IPUM resource has **60** decoded source frames, all with exact GOG RGB matches.
+
+All **77** O2D containers have bounded reference-grammar parses. Their **14,973** texture requests have same-stage candidates; this does not reproduce native UI rendering.
+
+Native consumer analysis binds the 432-byte `tdcm_empty.raw` payload to an **18 × 12 PSMCT16** upload. All 216 source RGB5/alpha-bit words decode and re-encode exactly; the local RGB diagnostic expands five-bit channels by bit replication and uses opaque display alpha. Source alpha bits, native TEXA and blending remain separate: zero source alpha is not claimed to mean final transparency. The complete GOG raw payload is identical, while no complete raw Trial counterpart matches.
+
+The separate 8,192-byte `vram0.raw` payload has a readable baked developer message in a **256 × 32 row-major byte-intensity diagnostic**: `http://www.kcej.com/xxx/` and `VRAMなんか覗かないで・・・` (“Do not go peeking at VRAM…”). An independent PNG decoder reproduces all 8,192 source bytes exactly. Eleven Document occurrences, seven verified named GOG occurrences and one stored Trial raw counterpart share this source payload. Its leading zeros do not characterize the complete payload. This visual identification and reversible byte interpretation do not establish the native pixel format, upload consumer or an observed in-game display. Only original text and metadata are published here; the extracted bitmap stays local.
+
+The font/Trial comparison retains an explicit partial two-bit 24-high shape hypothesis and 4,800 unclassified middle bytes; it does not establish native glyph parity. The RIM resource has no exact Trial RGB frame match in the stored pixel scope. These narrower results do not transfer native appearance claims across editions.
+
+Six separately counted **RAT raster containers** now decode to **464 frames and 294 distinct RGB images**, using native-backed LZ, hold-mask, low-nibble and packed-XOR rules. Removing only bounded zero DAT padding makes each source exactly equal its named GOG counterpart: `fat_ooze_blood.rat`, `ema_ooze_blood.rat`, `tears_rgb.rat`, `tears_sub.rat`, `w11.rat` and `w31c.rat`. All 464 frames agree in indexed pixels, RGB and literal source-palette alpha with those counterpart RAT sources. This is separate from the GOG/Trial type-19 pixel inventories, which contain no exact RGB frame match. Native GS orientation, scaled alpha, tint, blending, timing and actual actor use remain unverified. The six RAT containers and their frames do not inflate the 3,253 type-19 container or 59,485 entry counts.
+
+## Memory-card icons and the complete RAW ledger
+
+Three type-17 resources are **PS2 memory-card icon models**, with 3,093 source vertices, 1,031 triangles and three embedded 128 × 128 textures. Their complete vertex, animation-key, signed-RLE and zero-DAT-padding layouts are independently checked. Each has one stored animation key; static exports do not establish native animation playback. The source diagnostics show a green VR-SYSTEM device, a silver tripod/platform form and a dark ring/platform form. Their exact character or location identities are not invented. No exact raw, geometry or RGB counterpart occurs in the compared GOG/Trial sets. These three models are included among the 150 supplemental source records, with six neutral/opaque-UV GLBs retained locally. The native size walker corroborates the layout; the common [PS2 icon loader implementation](https://github.com/ps2homebrew/HDLGameInstaller/blob/main/IconLoader.c) is a separate format reference, not evidence of Document runtime behavior.
+
+Every one of the **40 distinct RAW payloads** now has an explicit classification: ten ROL outlines, seven RMT sample banks, six RAT raster sources, four RPD recordings, three memory-card icons, two indexed-font banks, two RPT reports, and one each of the fixed font atlas, RIM video, TDCM placeholder, VRAM message, RWV cloth dependency and authored Physics collection. The public metadata index retains the complete source ledger. This covers stored RAW source roles; it does not certify unused optional streams or native rendering.
+
+The four RPD files contain **1,534 controller-demo frames**, decoded as 20-byte input packets with initial play state and bounded source streams. The native reader and controller-buffer copy are statically traced; no input API or gameplay was executed. All four have exact unpadded named GOG counterparts. Two also exactly match stored Trial resources, reproducing all 1,271 corresponding packets; eight Trial references were separately decoded. The two RPT files are complete mesh-report text, whose bounds independently agree with the associated Physics exports. Neither family creates additional render geometry or sampled pixels.
+
+## Earlier specimen passes
+
+The sections below preserve the first three-model and eight-model expansion scopes. Their smaller comparison sets, first-pass rejections and verification receipts describe those milestones. The full corpus counts and resolved layout statuses above supersede them for current coverage.
 
 ## Source passport
 
@@ -73,7 +162,7 @@ The second batch retains the first three specimens and adds the following type-4
 
 Otacon's face, dark hair and pale jacket, Sergei's moustache, fur collar and camouflage, Rose's face and business suit, Emma's blood-stained bandage, and Solidus's face and armor were inspected in source-derived static diagnostics. The Campbell bust has a legible **CAMPBELL** nameplate. Its `48346b` identifier has no basename match among the 3,493 observed GOG stems in the name audit. The Olga-linked record correlates with literal `org_tng_mh_mt`; its precise narrative scene and native variant identity remain qualified. The literal Emma `addhand` name is a lead, not a verified hand-attachment behavior.
 
-The Fatman-linked resource is an effect component, not the Fatman actor. The sampled source pixels have alpha below the diagnostic cutout threshold of 128, so that cutout preview is blank. Neutral and opaque diagnostics expose the small static geometry; native effect appearance remains unknown. The main Fatman model meshes failed the unchanged strict flags-2264 gate and are not counted as a decoded actor.
+The Fatman-linked resource is an effect component, not the Fatman actor. The sampled source pixels have alpha below the diagnostic cutout threshold of 128, so that cutout preview is blank. Neutral and opaque diagnostics expose the small static geometry; native effect appearance remains unknown. At this earlier sample milestone, the main Fatman model meshes failed the strict flags-2264 gate. The full corpus decoder now supports their static geometry, as recorded above.
 
 | Source member | SHA-256 |
 |---|---|
@@ -177,10 +266,10 @@ The GOG `sna_def.kmy` body, Trial character candidates, and Skateboarding BNDR r
 
 ## Reverse engineering and remaining gates
 
-Two saved Ghidra analyses used the Emotion Engine processor. Across bounded first-pass and targeted exports, pseudocode was emitted for 43 distinct resident functions, covering file paths, loader and camera registrations, and archive cryptography. Native instruction listings and pseudocode remain local. The public notes report findings in newly written prose.
+At the earlier sample milestones, two saved Ghidra analyses used the Emotion Engine processor. Those bounded exports emitted pseudocode for 43 distinct resident functions, covering file paths, loader and camera registrations, and archive cryptography. The later corpus pass adds separate overlay and format investigations described above. Native instruction listings and pseudocode remain local. The public notes report findings in newly written prose.
 
 The archive implementation was independently derived against pinned primary [tools-mgs DAT source](https://raw.githubusercontent.com/Joy-Division/tools-mgs/4e9394baa8ac6872e66202ff0ce26352cd45bef9/dat-extract_enc.c) and [name-hash source](https://raw.githubusercontent.com/Joy-Division/tools-mgs/4e9394baa8ac6872e66202ff0ce26352cd45bef9/strcode/strcode.c), then corroborated against this disc's resident code. These references are credited evidence sources; their code is not copied into this exhibit.
 
-Native playback, complete stage code, menu-to-resource mappings, exact original filenames, faithful materials, animation, the rejected Fatman layouts, and shot-by-shot storyboard comparison remain open. Eleven model specimens and eleven sheets are bounded samples, not a claim of corpus-wide compatibility, complete actors, or a full decompilation.
+At the eleven-model/eleven-sheet milestone, the Fatman layouts and menu identities were still unresolved. The current corpus work resolves their static geometry and the two menu bindings described above. Native playback, complete stage code, unrecovered original filenames, faithful materials, animation and a shot-by-shot reading of every storyboard-stage image remain open. The source exports do not establish complete native actors, corpus-wide runtime compatibility or a full decompilation.
 
 See the [research notes](RESEARCH_NOTES.md) for the project's evidence conventions and [Contributing](CONTRIBUTING.md) for the public-content boundary.

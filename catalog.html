@@ -8,8 +8,9 @@
   <title>Model catalogs — The Archeology of MGS2</title>
   <link rel="icon" href="favicon.svg?v=20261018-archaeology-mark" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=20261023-document">
-  <link rel="stylesheet" href="catalog.css?v=20261023-document-expanded">
-  <script src="catalog.js?v=20261023-document-expanded" defer></script>
+  <link rel="stylesheet" href="catalog.css?v=20261023-document-corpus">
+  <script src="document-data.js?v=20261023-document-corpus" defer></script>
+  <script src="catalog.js?v=20261023-document-corpus" defer></script>
 </head>
 <body class="catalog-page">
   <a class="skip" href="#main">Skip to the catalog</a>
@@ -23,7 +24,7 @@
       <p class="eyebrow">05 / OPEN THE SPECIMEN DRAWERS</p>
       <h1>Model catalogs.<br><em>Evidence first.</em></h1>
       <p class="catalog-lede">Explore what the research has actually identified across GOG PC, PS2, trial releases, the skate mode, and Document. Each edition keeps its own evidence.</p>
-      <p><a class="text-link" href="document.html">Document: eleven model specimens and eleven storyboard sheets <span aria-hidden="true">↗</span></a></p>
+      <p><a class="text-link" href="document.html">Document: the full model and texture corpus <span aria-hidden="true">↗</span></a></p>
       <div class="catalog-boundary"><span aria-hidden="true">↳</span><p><strong>Bring your own local model.</strong> The viewer can inspect static geometry from a GLTF/GLB you select on this device. It reads the files in this browser tab and never uploads or saves them. The public site includes no extracted models, textures, game files, or captures.</p></div>
     </section>
 
@@ -44,8 +45,15 @@
           <div class="index-heading"><div><p class="eyebrow" id="catalog-kicker">GOG PC / RETAIL</p><h3 id="catalog-title">Qualified specimens</h3></div><span class="catalog-count" id="catalog-count">5 records</span></div>
           <div class="catalog-stats" id="catalog-stats"></div>
           <label class="search-label" for="catalog-search">Filter this catalog</label>
-          <input id="catalog-search" type="search" placeholder="Name or evidence…" autocomplete="off">
+          <input id="catalog-search" type="search" placeholder="Name or evidence…" autocomplete="off" aria-controls="catalog-results">
+          <div class="corpus-model-filters" id="corpus-model-filters" hidden>
+            <label for="document-model-family">Source family<select id="document-model-family"><option value="all">All families</option><option value="EVM">EVM</option><option value="KMS">KMS / nested ZMS</option><option value="Physics8020.0002">Physics models</option></select></label>
+            <label for="document-model-comparison">Position comparison<select id="document-model-comparison"><option value="all">All comparisons</option><option value="gog">GOG exact metric match</option><option value="trial">Trial exact metric match</option><option value="different">No exact GOG metric match</option></select></label>
+            <label for="document-model-status">Geometry evidence<select id="document-model-status"><option value="all">All static exports</option><option value="static_geometry">Static source geometry</option><option value="part_local_geometry">Part-local / assembly open</option><option value="static_polygon_geometry">Authored Physics polygons</option></select></label>
+            <button id="document-model-reset" type="button">Reset filters</button>
+          </div>
           <div id="catalog-results" class="catalog-results" role="listbox" aria-label="Specimens"></div>
+          <div class="catalog-pagination" id="catalog-pagination" hidden><button id="catalog-prev" type="button" disabled>Previous</button><p id="catalog-page-status" role="status" aria-live="polite"></p><button id="catalog-next" type="button">Next</button></div>
         </aside>
 
         <section class="specimen-viewer" aria-label="Interactive specimen preview">
@@ -65,11 +73,12 @@
             <button id="reset-view" type="button">Reset view</button>
           </div>
           <div class="selected-record">
-            <div><p class="eyebrow">FIELD RECORD</p><h4 id="record-title">—</h4><p id="record-description"></p></div>
+            <div><p class="eyebrow">FIELD RECORD</p><h4 id="record-title">—</h4><p id="record-description"></p><a id="record-permalink" class="record-permalink" href="catalog.html?edition=document" hidden>Link to this record ↗</a></div>
             <dl id="record-metrics" class="record-metrics"></dl>
           </div>
+          <details id="record-source-metadata" class="record-source-metadata" hidden><summary>Source identities and comparison metadata</summary><p>Names are bounded source correlations. The comparison metric and its limits are defined in the <a href="DOCUMENT_RESEARCH.md">Document field notes</a>.</p><pre id="record-source-json"></pre></details>
           <div class="local-import">
-            <div><p class="eyebrow">YOUR FILES / THIS DEVICE ONLY</p><h4>Load a local model</h4><p>Select a GLB, or a GLTF together with its referenced BIN file. The preview reads geometry only; materials, textures, skinning, animation, and native game behavior are not reproduced.</p></div>
+            <div><p class="eyebrow">YOUR FILES / THIS DEVICE ONLY</p><h4>Load local geometry</h4><p>Select a GLB, or a GLTF together with its referenced BIN file. The preview reads static points, triangles and polylines; materials, textures, skinning, animation, and native game behavior are not reproduced.</p></div>
             <label class="file-button" for="local-model-files">Choose GLTF / GLB files</label>
             <input id="local-model-files" type="file" accept=".gltf,.glb,.bin,model/gltf+json,model/gltf-binary" multiple>
             <button id="clear-local-model" type="button" disabled>Clear local model</button>
@@ -79,6 +88,7 @@
         </section>
       </div>
     </section>
+    <noscript><p class="catalog-no-script">The interactive catalog needs JavaScript. <a href="DOCUMENT_RESEARCH.md">Read the Document field notes</a> or <a href="document-corpus.json">inspect the public metadata index</a>. Extracted assets remain local.</p></noscript>
   </main>
 
   <footer class="catalog-footer"><p><strong>Follow the evidence. Keep the originals intact.</strong> This is an independent educational project. Game assets remain with their respective rights holders; third-party formats and tools keep their own licenses.</p><a href="index.html">Back to the museum ↗</a></footer>

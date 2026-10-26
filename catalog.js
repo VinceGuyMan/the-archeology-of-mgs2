@@ -93,8 +93,8 @@
     },
     document: {
       kicker: "DOCUMENT / USA / SLUS-20543",
-      title: "Eleven static model specimens",
-      summary: "Ten character studies and one Fatman-linked effect component now have bounded geometry decodes. Nine specimens share a GOG position-triangle multiset; Raiden and the Campbell bust differ. The Document room records eleven storyboard sheets, including production notes about player prompts and dog tags.",
+      title: "Full corpus / loading metadata",
+      summary: "The recognized Document model families cover EVM, KMS, nested ZMS and authored Physics models. Curated records remain available while the verified metadata loads.",
       stats: [["11", "model specimens decoded"], ["11", "storyboard sheets decoded"], ["9", "GOG position-multiset matches"], ["1", "effect component, not an actor"]],
       boundary: "Source: Document USA, DOCUMENT/STAGE.DAT; 442 Document + 14 secondary stages. Hierarchy and strip counts are diagnostic records, not complete actors. Position comparisons ignore winding, normals, UVs, weights, materials and runtime state. Names combine visual review and bounded catalog correlations; original Document basenames remain unresolved. No extracted geometry or textures are hosted; native rendering and animation remain untested.",
       entries: [
@@ -108,7 +108,7 @@
         {id:"cmdl07",name:"Emma, bandaged variant · cmdl07 / 7d76c2",status:"Static geometry · GOG position match",kind:"character",description:"The face, dark shorts, red shoes and blood-stained torso bandage support Emma's bandaged variant. All 3,592 position triangles match GOG ema_houtai_addhand_mh_mt.evx; binaries differ. The addhand basename is a catalog lead and does not verify hand attachment behavior.",metrics:[["Hierarchy records","87"],["Strip entries","6,130"],["Triangles","3,592"],["Source bytes","254,544"],["Resource ID","7d76c2 · type 4"],["GOG position match","3,592 / 3,592 triangles"]]},
         {id:"cmdl08",name:"Olga-linked armored variant · cmdl08 / 643f41",status:"Static geometry · GOG position match",kind:"character",description:"Short-haired face, helmet and armored suit pixels correlate with the GOG org_tng_mh_mt family. All 3,026 position triangles match the named GOG member; binaries differ. The literal basename is retained as a lead. Precise narrative scene and native variant identity remain unverified.",metrics:[["Hierarchy records","53"],["Strip entries","5,374"],["Triangles","3,026"],["Source bytes","233,920"],["Resource ID","643f41 · type 4"],["GOG position match","3,026 / 3,026 triangles"]]},
         {id:"cmdl09",name:"Solidus, base armored model · cmdl09 / 543595",status:"Static geometry · GOG position match",kind:"character",description:"Gray hair, beard and armor support Solidus, correlated with sol_def_mh_mt. All 3,916 position triangles match that GOG member; binaries differ. Separate equipment, animation and scene state have not been assembled into a complete actor.",metrics:[["Hierarchy records","53"],["Strip entries","6,616"],["Triangles","3,916"],["Source bytes","283,280"],["Resource ID","543595 · type 4"],["GOG position match","3,916 / 3,916 triangles"]]},
-        {id:"cmdl10",name:"Fatman-linked blood/ooze component · cmdl10 / eb4887",status:"Static effect component · main actor unsupported",kind:"rigid",description:"A 64-triangle component correlates with GOG fat_ooze_blood_mh.evx and shares all position triangles; binaries differ. Source alpha falls below the diagnostic cutout threshold, leaving that preview blank. Neutral or opaque inspection shows static geometry; native effect appearance is unknown. The main Fatman meshes remain rejected by the strict decoder's flags-2264 gate.",metrics:[["Record role","Effect component, not actor"],["Hierarchy records","58"],["Strip entries","112"],["Triangles","64"],["Source bytes","7,664"],["Resource ID","eb4887 · type 4"]]}
+        {id:"cmdl10",name:"Fatman-linked blood/ooze component · cmdl10 / eb4887",status:"Static effect component",kind:"rigid",description:"A 64-triangle component correlates with GOG fat_ooze_blood_mh.evx and shares all position triangles; binaries differ. Source alpha falls below the diagnostic cutout threshold, leaving that preview blank. Native effect appearance is unknown. The separate main Fatman model is now decoded in the full corpus; this record remains the effect component.",metrics:[["Record role","Effect component, not actor"],["Hierarchy records","58"],["Strip entries","112"],["Triangles","64"],["Source bytes","7,664"],["Resource ID","eb4887 · type 4"]]}
       ]
     },
     skate: {
@@ -146,12 +146,46 @@
   let dirty = true;
   let dragging = false;
   let lastPoint = null;
+  const curatedDocument = new Map(catalogs.document.entries.map(entry => [entry.id,entry]));
+  const documentPageSize = 40;
+  let documentPage = 0;
+  let documentCorpusReady = false;
+  let documentLoading = false;
+  let documentLoadError = null;
+  let documentIndex = null;
+  const requestedSpecimen = new URLSearchParams(window.location.search).get("specimen");
+  const requestedFamily = new URLSearchParams(window.location.search).get("family");
 
   function el(id) { return document.getElementById(id); }
   function setText(id, value) { el(id).textContent = value; }
 
+  const geometryLabels = {static_geometry:"Static source geometry",part_local_geometry:"Part-local geometry / assembly open",static_polygon_geometry:"Authored Physics polygons",
+    source_points_verified:"Verified source points",source_points_secondary_stream_unusable:"Source points / secondary streams unusable",source_lines_verified:"Verified source outlines",bound_static_geometry_verified:"Bound cloth source geometry"};
+  function metricMatches(row,edition) {
+    return row[edition]?.exact_geometry_matches ?? row[edition]?.position_multiset_matches ?? 0;
+  }
+  function primitiveSummary(row) {
+    if (row.geometry_kind === "points") return row.points.toLocaleString()+" points";
+    if (row.geometry_kind === "lines") return row.line_segments.toLocaleString()+" line segments";
+    return row.triangles.toLocaleString()+" triangles";
+  }
+
   function addTriangle(target, points, color) {
     target.push({points: points, color: color % palette.length});
+  }
+
+  function addLine(target,points,color) {
+    if (points.length !== 2 || points.some(point => point.length !== 3 || point.some(value => !Number.isFinite(value)))) {
+      throw new Error("A line primitive contains invalid coordinates.");
+    }
+    target.push({points,color:color % palette.length,kind:"line"});
+  }
+
+  function addPoint(target,point,color) {
+    if (point.length !== 3 || point.some(value => !Number.isFinite(value))) {
+      throw new Error("A point primitive contains invalid coordinates.");
+    }
+    target.push({points:[point],color:color % palette.length,kind:"point"});
   }
 
   function addBox(target, center, size, color) {
@@ -281,6 +315,14 @@
     setText("record-title", currentEntry.name);
     setText("record-description", currentEntry.description);
     renderMetrics(currentEntry);
+    const permalink = el("record-permalink");
+    permalink.hidden = currentEdition !== "document";
+    if (currentEdition === "document") {
+      permalink.href = "catalog.html?edition=document&specimen=" + encodeURIComponent(currentEntry.alias || currentEntry.id);
+    }
+    const metadata = el("record-source-metadata");
+    metadata.hidden = !currentEntry.corpus;
+    if (currentEntry.corpus) el("record-source-json").textContent = JSON.stringify(currentEntry.corpus,null,2);
     setText("catalog-boundary", cat.boundary);
     if (!localGeometry) {
       setGeometry(makeProxy(currentEntry.kind), false, "");
@@ -294,10 +336,28 @@
     const cat = catalogs[currentEdition];
     const term = search.value.trim().toLowerCase();
     list.replaceChildren();
-    const matched = cat.entries.map((entry,index)=>({entry,index})).filter(({entry}) =>
-      (entry.name+" "+entry.status+" "+entry.description).toLowerCase().includes(term)
-    );
+    const fullDocument = currentEdition === "document" && documentCorpusReady;
+    const matched = cat.entries.map((entry,index)=>({entry,index})).filter(({entry}) => {
+      if (!(entry.searchText || (entry.name+" "+entry.status+" "+entry.description).toLowerCase()).includes(term)) return false;
+      if (!fullDocument) return true;
+      const row = entry.corpus;
+      const family = el("document-model-family").value;
+      const comparison = el("document-model-comparison").value;
+      const status = el("document-model-status").value;
+      return (family === "all" || row.family === family) && (status === "all" || row.status === status) &&
+        (comparison === "all" || (comparison === "gog" && metricMatches(row,"gog") > 0) ||
+         (comparison === "trial" && metricMatches(row,"trial") > 0) ||
+         (comparison === "different" && !metricMatches(row,"gog")));
+    });
     setText("catalog-count", matched.length + (matched.length === 1 ? " record" : " records"));
+    el("corpus-model-filters").hidden = !fullDocument;
+    el("catalog-pagination").hidden = !fullDocument;
+    documentPage = Math.max(0,Math.min(documentPage,Math.ceil(matched.length/documentPageSize)-1));
+    const start = fullDocument ? documentPage*documentPageSize : 0;
+    const visible = fullDocument ? matched.slice(start,start+documentPageSize) : matched;
+    el("catalog-prev").disabled = documentPage === 0;
+    el("catalog-next").disabled = start+documentPageSize >= matched.length;
+    setText("catalog-page-status", matched.length ? (start+1)+"–"+Math.min(start+documentPageSize,matched.length)+" of "+matched.length.toLocaleString() : "0 matching records");
     if (!matched.length) {
       const empty = document.createElement("p");
       empty.className = "empty-results";
@@ -305,7 +365,7 @@
       list.append(empty);
       return;
     }
-    for (const {entry,index} of matched) {
+    for (const {entry,index} of visible) {
       const button = document.createElement("button");
       button.type = "button";
       button.className = "catalog-item";
@@ -318,10 +378,111 @@
       state.className = "item-status";
       state.textContent = entry.status;
       const description = document.createElement("span");
-      description.textContent = entry.metrics.map((metric)=>metric[0]+": "+metric[1]).join(" · ");
+      description.textContent = entry.corpus ? entry.corpus.family+" · "+primitiveSummary(entry.corpus)+" · "+entry.corpus.stages[0]+" / "+entry.corpus.resource_hashes[0]+(entry.corpus.stages.length>1 ? " · "+entry.corpus.stages.length+" stages" : "") : entry.metrics.map((metric)=>metric[0]+": "+metric[1]).join(" · ");
       button.append(name,state,description);
-      button.addEventListener("click",()=>selectEntry(index));
+      button.addEventListener("click",()=>{
+        selectEntry(index);
+        if (currentEdition === "document" && documentCorpusReady) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("edition","document");
+          url.searchParams.set("specimen",entry.alias || entry.id);
+          history.replaceState(null,"",url);
+        }
+      });
       list.append(button);
+    }
+    if (currentEdition === "document" && !documentCorpusReady) {
+      const note = document.createElement("p");
+      note.className = "empty-results";
+      note.setAttribute("role","status");
+      note.textContent = documentLoadError ? documentLoadError : "Loading the full verified model corpus…";
+      list.append(note);
+      if (documentLoadError) {
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.className = "corpus-retry";
+        retry.textContent = "Retry full corpus";
+        retry.addEventListener("click",loadDocumentCorpus);
+        list.append(retry);
+      }
+    }
+  }
+
+  function documentEntry(row, alias) {
+    const curated = curatedDocument.get(alias);
+    const exact = metricMatches(row,"gog") > 0;
+    const comparison = exact ? "The stated geometry metric has an exact GOG reference match. " : "No exact GOG match under the stated metric; this is not global uniqueness. ";
+    const placement = row.status === "part_local_geometry" ? "Parts decode, but their native assembly remains unverified. " : "Native pose, materials, animation and complete-actor behavior remain unverified. ";
+    const supplemental = !!row.geometry_kind;
+    const identity = row.identity_support === "Native menu consumer and exact GCX title-group/index binding" ? "The disc's menu metadata binds this stage/resource to the stated title. Original basenames and native rendered behavior remain unverified. " : "Source names are bounded catalog correlations; original Document filenames are not recovered.";
+    const description = curated?.description || row.family + " source resource. " + comparison + placement + (supplemental ? row.limitations.join(" ") : identity);
+    const entry = {
+      id:row.id, alias, corpus:row,
+      name:curated?.name || row.title + " · " + row.resource_hashes.join(" / "),
+      status:(geometryLabels[row.status] || row.status.replaceAll("_"," ")) + (exact ? " · shared metric" : " · comparison differs"),
+      kind:curated?.kind || "structure", description,
+      metrics:[["Family",row.family],["Source vertices",row.vertices.toLocaleString()],[supplemental ? "Diagnostic primitives" : "Diagnostic triangles",supplemental ? primitiveSummary(row) : row.triangles.toLocaleString()],
+               [supplemental ? row.binding ? "Bound CVY part" : "Source parts / objects" : "Hierarchy / definitions",supplemental ? String(row.binding?.part ?? row.source_parts ?? row.objects ?? "Unclassified") : row.hierarchy+" / "+row.definitions],["Occurrences",row.occurrences.toLocaleString()],
+               ["GOG exact metric references",String(metricMatches(row,"gog"))],["Trial exact metric references",String(metricMatches(row,"trial"))],
+               ["Source SHA-256",row.source_member_sha256]]
+    };
+    entry.searchText = (JSON.stringify(row)+" "+entry.name+" "+(alias || "")).toLowerCase();
+    return entry;
+  }
+
+  async function loadDocumentCorpus() {
+    if (documentLoading || documentCorpusReady) return;
+    documentLoading = true;
+    documentLoadError = null;
+    list.setAttribute("aria-busy","true");
+    try {
+      const [loaded,supplemental] = await Promise.all([window.DocumentCorpus.load("models"),window.DocumentCorpus.load("geometry")]);
+      documentIndex = loaded.index;
+      const byId = new Map(Object.entries(documentIndex.aliases).map(([alias,id]) => [id,alias]));
+      const rows = loaded.records.concat(supplemental.records);
+      const entries = rows.map(row => documentEntry(row,byId.get(row.id)));
+      if (new Set(entries.map(entry=>entry.id)).size !== entries.length) throw new Error("Combined source-record IDs are not unique.");
+      for (const [id,values,label] of [["document-model-family",new Set(rows.map(row=>row.family)),value=>value],
+                                     ["document-model-status",new Set(rows.map(row=>row.status)),value=>geometryLabels[value] || value.replaceAll("_"," ")]]) {
+        const select=el(id);
+        select.replaceChildren();
+        const all=document.createElement("option"); all.value="all"; all.textContent="All "+(id.endsWith("family") ? "families" : "static exports"); select.append(all);
+        for (const value of [...values].sort()) {const option=document.createElement("option");option.value=value;option.textContent=label(value);select.append(option);}
+      }
+      const priority = [...Object.values(documentIndex.aliases),...documentIndex.highlights.map(row => row.id)];
+      entries.sort((a,b) => {
+        const left = priority.indexOf(a.id), right = priority.indexOf(b.id);
+        if (left >= 0 || right >= 0) return (left < 0 ? 99999 : left)-(right < 0 ? 99999 : right);
+        return a.name.localeCompare(b.name) || a.id.localeCompare(b.id);
+      });
+      const summary = documentIndex.models.summary;
+      const cat = catalogs.document;
+      cat.entries = entries;
+      cat.title = entries.length.toLocaleString()+" source records";
+      cat.summary = "The recognized EVM, KMS, nested ZMS and Physics families contain "+summary.logical_models.toLocaleString()+" logical models, with "+supplemental.records.length.toLocaleString()+" separately counted supplemental geometry sources. Six model exports retain part-local geometry with native assembly open.";
+      cat.stats = [[summary.logical_models.toLocaleString(),"logical model records"],[supplemental.records.length.toLocaleString(),"supplemental geometry sources"],
+                   [summary.gog_exact_geometry_models.toLocaleString(),"model GOG metric matches"],[summary.trial_exact_geometry_models.toLocaleString(),"model Trial metric matches"]];
+      cat.boundary = "Every source group in both DAT archives was replayed: 456 stages, 948 groups, 20,087 member occurrences. EVM/KMS equality compares local signed-i16 XYZ triangle multisets and ignores transforms, hierarchy, UVs, normals, weights and materials. Physics uses a separate float64 polygon/unpacked-byte metric. Supplemental records retain their own point/line/triangle metric; point arrays do not establish surface topology. Shared geometry does not establish identical textures, actors or native behavior. Extracted assets remain local.";
+      documentCorpusReady = true;
+      if (currentEdition === "document") {
+        setText("catalog-title",cat.title);
+        setText("catalog-summary",cat.summary);
+        renderStats(cat);
+        if ([...el("document-model-family").options].some(option=>option.value===requestedFamily)) el("document-model-family").value=requestedFamily;
+        const target = documentIndex.aliases[requestedSpecimen] || requestedSpecimen;
+        const index = Math.max(0,entries.findIndex(entry => target ? entry.id === target : requestedFamily ? entry.corpus.family === requestedFamily : false));
+        const family=el("document-model-family").value;
+        const filtered=family === "all" ? entries : entries.filter(entry=>entry.corpus.family===family);
+        documentPage = Math.max(0,Math.floor(filtered.indexOf(entries[index])/documentPageSize));
+        selectEntry(index);
+        renderEntries();
+      }
+    } catch (error) {
+      documentLoadError = "Full corpus unavailable: "+(error.message || "metadata could not be loaded")+" The eleven curated records below are the earlier sample scope.";
+      if (currentEdition === "document") renderEntries();
+    } finally {
+      documentLoading = false;
+      list.setAttribute("aria-busy","false");
     }
   }
 
@@ -341,8 +502,11 @@
     setText("catalog-summary",cat.summary);
     renderStats(cat);
     search.value = "";
+    documentPage = 0;
+    for (const id of ["document-model-family","document-model-comparison","document-model-status"]) el(id).value = "all";
     currentEntry = null;
     renderEntries();
+    if (name === "document" && !documentCorpusReady) loadDocumentCorpus();
     selectEntry(0);
     renderEntries();
   }
@@ -393,6 +557,14 @@
         return [width/2+rx*scale,height/2-ry*scale,dz];
       });
       const a=points[0], b=points[1], c=points[2];
+      if (tri.kind === "point") {
+        projected.push({points,depth:a[2],color:tri.color,light:1,kind:"point"});
+        continue;
+      }
+      if (tri.kind === "line") {
+        projected.push({points,depth:(a[2]+b[2])/2,color:tri.color,light:1,kind:"line"});
+        continue;
+      }
       const ux=b[0]-a[0], uy=b[1]-a[1], uz=b[2]-a[2];
       const vx=c[0]-a[0], vy=c[1]-a[1], vz=c[2]-a[2];
       const nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
@@ -403,8 +575,20 @@
     projected.sort((a,b)=>a.depth-b.depth);
     for (const tri of projected) {
       context.beginPath();
+      if (tri.kind === "point") {
+        context.arc(tri.points[0][0],tri.points[0][1],Math.max(1.75,width/350),0,Math.PI*2);
+        context.fillStyle=palette[tri.color];
+        context.fill();
+        continue;
+      }
       context.moveTo(tri.points[0][0],tri.points[0][1]);
       context.lineTo(tri.points[1][0],tri.points[1][1]);
+      if (tri.kind === "line") {
+        context.strokeStyle=palette[tri.color];
+        context.lineWidth=Math.max(1.25,width/600);
+        context.stroke();
+        continue;
+      }
       context.lineTo(tri.points[2][0],tri.points[2][1]);
       context.closePath();
       context.fillStyle=shaded(palette[tri.color],tri.light);
@@ -577,17 +761,40 @@
         const indices=primitive.indices===undefined ? positions.map((_,index)=>index) : readAccessor(primitive.indices,"SCALAR");
         const mode=primitive.mode===undefined ? 4 : primitive.mode;
         const triplets=[];
-        if(mode===4) for(let i=0;i+2<indices.length;i+=3) triplets.push([indices[i],indices[i+1],indices[i+2]]);
+        const segments=[];
+        if(mode===0) {
+          for(const index of indices) {
+            if(output.length>=50000) throw new Error("This preview is limited to 50,000 points, triangles or line segments for responsive browser use.");
+            if(!Number.isInteger(index) || !positions[index]) throw new Error("A point primitive references a missing vertex.");
+            addPoint(output,transformPoint(world,positions[index]),primitiveColor);
+          }
+          primitiveColor++;
+        } else if(mode===4) for(let i=0;i+2<indices.length;i+=3) triplets.push([indices[i],indices[i+1],indices[i+2]]);
         else if(mode===5) for(let i=2;i<indices.length;i++) triplets.push(i%2 ? [indices[i-1],indices[i-2],indices[i]] : [indices[i-2],indices[i-1],indices[i]]);
         else if(mode===6) for(let i=2;i<indices.length;i++) triplets.push([indices[0],indices[i-1],indices[i]]);
-        else continue;
+        else if(mode===1) {
+          if(indices.length%2) throw new Error("A LINES primitive has an incomplete pair.");
+          for(let i=0;i<indices.length;i+=2) segments.push([indices[i],indices[i+1]]);
+        } else if(mode===2 || mode===3) {
+          if(indices.length<2) throw new Error("A line loop or strip needs at least two indices.");
+          for(let i=1;i<indices.length;i++) segments.push([indices[i-1],indices[i]]);
+          if(mode===2) segments.push([indices[indices.length-1],indices[0]]);
+        } else continue;
         for(const indexTriplet of triplets) {
-          if(output.length>=50000) throw new Error("This preview is limited to 50,000 triangles for responsive browser use.");
+          if(output.length>=50000) throw new Error("This preview is limited to 50,000 points, triangles or line segments for responsive browser use.");
           const points=indexTriplet.map((index)=>{
             if(!positions[index]) throw new Error("A primitive references a missing vertex.");
             return transformPoint(world,positions[index]);
           });
           addTriangle(output,points,primitiveColor++);
+        }
+        for(const pair of segments) {
+          if(output.length>=50000) throw new Error("This preview is limited to 50,000 points, triangles or line segments for responsive browser use.");
+          const points=pair.map(index=>{
+            if(!Number.isInteger(index) || !positions[index]) throw new Error("A line primitive references a missing vertex.");
+            return transformPoint(world,positions[index]);
+          });
+          addLine(output,points,primitiveColor++);
         }
       }
     }
@@ -606,8 +813,8 @@
     } else {
       for(let i=0;i<(document.meshes || []).length;i++) appendMesh(i,[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
     }
-    if(!output.length) throw new Error("No static triangle, strip, or fan geometry was found in the scene.");
-    return {triangles:output,name:sceneFile.name};
+    if(!output.length) throw new Error("No static point, triangle or line geometry was found in the scene.");
+    return {triangles:output,name:sceneFile.name,triangleCount:output.filter(item=>!item.kind).length,lineCount:output.filter(item=>item.kind==="line").length,pointCount:output.filter(item=>item.kind==="point").length};
   }
 
   fileInput.addEventListener("change",async()=>{
@@ -617,8 +824,8 @@
       setGeometry(result.triangles,true,result.name);
       setText("viewer-label","LOCAL FILE / GEOMETRY ONLY");
       setText("specimen-name",result.name);
-      setText("specimen-state","LOCAL STATIC MESH");
-      setStatus("Loaded "+result.name+": "+result.triangles.length.toLocaleString()+" triangles. Files stay in this browser tab; textures, skinning, and animation are not loaded.",false);
+      setText("specimen-state",result.lineCount || result.pointCount ? "LOCAL STATIC GEOMETRY" : "LOCAL STATIC MESH");
+      setStatus("Loaded "+result.name+": "+result.triangleCount.toLocaleString()+" triangles"+(result.lineCount ? " · "+result.lineCount.toLocaleString()+" line segments" : "")+(result.pointCount ? " · "+result.pointCount.toLocaleString()+" points" : "")+". Files stay in this browser tab; textures, skinning, and animation are not loaded.",false);
     } catch(error) {
       setStatus(error && error.message ? error.message : "Could not read this local model.",true);
     }
@@ -634,7 +841,20 @@
     setStatus("Local file cleared. Synthetic teaching proxy restored.",false);
   });
 
-  search.addEventListener("input",renderEntries);
+  search.addEventListener("input",()=>{documentPage=0;renderEntries();});
+  for (const id of ["document-model-family","document-model-comparison","document-model-status"]) {
+    el(id).addEventListener("change",()=>{documentPage=0;renderEntries();});
+  }
+  el("document-model-reset").addEventListener("click",()=>{
+    search.value="";
+    for (const id of ["document-model-family","document-model-comparison","document-model-status"]) el(id).value="all";
+    documentPage=0;
+    renderEntries();
+    search.focus();
+  });
+  for (const [id,step] of [["catalog-prev",-1],["catalog-next",1]]) {
+    el(id).addEventListener("click",()=>{documentPage+=step;renderEntries();list.scrollTop=0;});
+  }
   tabs.forEach((tab,index)=>{
     tab.addEventListener("click",()=>selectEdition(tab.dataset.edition));
     tab.addEventListener("keydown",(event)=>{
@@ -683,7 +903,6 @@
 
   const requested=new URLSearchParams(window.location.search).get("edition");
   selectEdition(catalogs[requested] ? requested : "gog");
-  const requestedSpecimen=new URLSearchParams(window.location.search).get("specimen");
   const requestedIndex=catalogs[currentEdition].entries.findIndex(entry => entry.id === requestedSpecimen);
   if (requestedSpecimen && requestedIndex >= 0) {
     selectEntry(requestedIndex);

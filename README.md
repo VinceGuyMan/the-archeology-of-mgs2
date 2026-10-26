@@ -4,7 +4,7 @@ An independent, educational look at how Metal Gear Solid 2 works. Explore the id
 
 **[Visit the interactive museum](https://vinceguyman.github.io/the-archeology-of-mgs2/)** · [Browse the source](https://github.com/VinceGuyMan/the-archeology-of-mgs2)
 
-The default previews use synthetic data and original graphics. The model catalog can also inspect static geometry from a GLTF/GLB you select on your device; the files stay in your browser tab and are never uploaded. The site does not read game archives, run MGS2 or reproduce a complete game engine.
+The default previews use synthetic data and original graphics. The model catalog can also inspect static point, triangle and polyline geometry from a GLTF/GLB you select on your device; the files stay in your browser tab and are never uploaded. The site does not read game archives, run MGS2 or reproduce a complete game engine.
 
 ## What is here
 
@@ -14,11 +14,11 @@ The default previews use synthetic data and original graphics. The model catalog
 | PS2 versions | Regional binary mappings (SLED-50117 / Retail), VU1 microcode pipeline disassembly, and texture swizzle audits. |
 | Trials and demos | Verified gameplay route swaps (Olga all-room, Opening Bridge04, bloodied Snake, soldier), 464 passing repository tests. |
 | Skateboarding | 115 named BNDR records indexed, SKATE2.ELF analyzed, and movement mechanics reverse-engineered. |
-| The Document of MGS2 (USA) | Separate SLUS-20543 source track; 442 + 14 stage entries, eleven decoded model specimens (including one effect component), and eleven storyboard sheets. Nine GOG position-multiset matches; Campbell adds 22 cap triangles relative to its GOG reference. |
+| The Document of MGS2 (USA) | Complete 456-stage source-group pass; 3,945 logical model records, 3,253 texture containers and 59,485 decoded source RGB entries. Separate EVM/KMS and Physics metrics, six part-local assemblies still open, and fourteen individually identified storyboard sheets. |
 
 Open the [interactive model catalogs](catalog.html) to browse findings, orbit synthetic teaching proxies, and inspect a local GLTF/GLB. A local import can be cleared at any time; no file is sent to a server or saved by the page.
 
-Open the [Document exhibition room](document.html) for eleven model and eleven storyboard records, type and text filters, the source passport, edition comparisons, and a local PNG inspector. [Document field notes](DOCUMENT_RESEARCH.md) record exact member identities, authored interaction notes and evidence limits. Public model records link directly into the catalog. Extracted models and images remain outside this publication, following the same rules as the other versions.
+Open the [Document exhibition room](document.html) for the complete paginated texture-container browser, curated model/storyboard studies, source passport, edition comparisons and a local PNG inspector. The [full Document source catalog](catalog.html?edition=document) filters 4,095 source records: 3,945 main model records and 150 separately counted point, line, cloth and icon sources. [Document field notes](DOCUMENT_RESEARCH.md) define exact coverage and remaining limits; the [metadata index](document-corpus.json) links every hash-checked record shard and all 40 RAW classifications. Extracted models and images remain outside this publication.
 
 Read the [October 18 field notes](PROGRESS_2026-10-18.md) for the newer full body-cycle specimen, three-action arms study, Codec authoring, preserved PS2/trial/skate findings and Universal Modder assessment. Earlier 16-sample and partial-triangle results remain historical milestones. These bounded results do not establish native game playback, a complete character exporter or general compatibility across editions.
 
