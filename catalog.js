@@ -159,7 +159,7 @@
   function el(id) { return document.getElementById(id); }
   function setText(id, value) { el(id).textContent = value; }
 
-  const geometryLabels = {static_geometry:"Static source geometry",part_local_geometry:"Part-local geometry / assembly open",static_polygon_geometry:"Authored Physics polygons",
+  const geometryLabels = {static_geometry:"Static source geometry",part_local_geometry:"Part-bank source geometry",static_polygon_geometry:"Authored Physics polygons",
     source_points_verified:"Verified source points",source_points_secondary_stream_unusable:"Source points / secondary streams unusable",source_lines_verified:"Verified source outlines",bound_static_geometry_verified:"Bound cloth source geometry"};
   function metricMatches(row,edition) {
     return row[edition]?.exact_geometry_matches ?? row[edition]?.position_multiset_matches ?? 0;
@@ -304,6 +304,42 @@
     }
   }
 
+  function renderAssemblyStudy(study) {
+    let panel = el("record-assembly-study");
+    if (!panel) {
+      panel = document.createElement("section");
+      panel.id = "record-assembly-study";
+      panel.className = "record-assembly-study";
+      panel.setAttribute("aria-labelledby","record-assembly-title");
+      el("record-source-metadata").before(panel);
+    }
+    panel.replaceChildren();
+    panel.hidden = !study;
+    if (!study) return;
+    const text = (tag,value,className) => {
+      const node = document.createElement(tag);
+      node.textContent = value;
+      if (className) node.className = className;
+      return node;
+    };
+    const heading = text("h4","Assembly study");
+    heading.id = "record-assembly-title";
+    panel.append(heading,text("p",study.assembly_status.replaceAll("_"," ")+" · "+study.part_count.toLocaleString()+" source parts","assembly-state"));
+    const findings = document.createElement("ul");
+    for (const finding of study.findings) findings.append(text("li",finding));
+    panel.append(findings,text("p","GOG: "+study.gog.summary),text("p","Trial: "+study.trial.summary));
+    panel.append(text("p",study.verified_variants.toLocaleString()+" verified local variant"+(study.verified_variants === 1 ? "" : "s")+
+      (study.local_export_modes.length ? " · "+study.local_export_modes.map(mode=>mode.replaceAll("_"," ")).join(" / ") : " · no assembly export admitted"),"assembly-state"));
+    const details = document.createElement("details");
+    details.id = "record-assembly-evidence";
+    const limits = document.createElement("ul");
+    for (const limit of new Set([...study.limitations,...(documentIndex?.assembly_studies?.limits || [])])) limits.append(text("li",limit));
+    const source = text("pre",JSON.stringify(study,null,2));
+    source.id = "record-assembly-json";
+    details.append(text("summary","Evidence and remaining limits"),limits,source);
+    panel.append(details);
+  }
+
   function selectEntry(index) {
     const cat = catalogs[currentEdition];
     currentEntry = cat.entries[index];
@@ -315,6 +351,7 @@
     setText("record-title", currentEntry.name);
     setText("record-description", currentEntry.description);
     renderMetrics(currentEntry);
+    renderAssemblyStudy(currentEntry.assembly);
     const permalink = el("record-permalink");
     permalink.hidden = currentEdition !== "document";
     if (currentEdition === "document") {
@@ -408,16 +445,16 @@
     }
   }
 
-  function documentEntry(row, alias) {
+  function documentEntry(row, alias, assembly) {
     const curated = curatedDocument.get(alias);
     const exact = metricMatches(row,"gog") > 0;
     const comparison = exact ? "The stated geometry metric has an exact GOG reference match. " : "No exact GOG match under the stated metric; this is not global uniqueness. ";
-    const placement = row.status === "part_local_geometry" ? "Parts decode, but their native assembly remains unverified. " : "Native pose, materials, animation and complete-actor behavior remain unverified. ";
+    const placement = row.status === "part_local_geometry" ? (assembly ? "This part bank has a verified selection study and conditional rigid diagnostics; native skinning and mesh pose remain unverified. " : "Parts retain their source-local coordinates; native binding and pose remain unverified. ") : "Native pose, materials, animation and complete-actor behavior remain unverified. ";
     const supplemental = !!row.geometry_kind;
     const identity = row.identity_support === "Native menu consumer and exact GCX title-group/index binding" ? "The disc's menu metadata binds this stage/resource to the stated title. Original basenames and native rendered behavior remain unverified. " : "Source names are bounded catalog correlations; original Document filenames are not recovered.";
     const description = curated?.description || row.family + " source resource. " + comparison + placement + (supplemental ? row.limitations.join(" ") : identity);
     const entry = {
-      id:row.id, alias, corpus:row,
+      id:row.id, alias, corpus:row, assembly,
       name:curated?.name || row.title + " · " + row.resource_hashes.join(" / "),
       status:(geometryLabels[row.status] || row.status.replaceAll("_"," ")) + (exact ? " · shared metric" : " · comparison differs"),
       kind:curated?.kind || "structure", description,
@@ -426,7 +463,7 @@
                ["GOG exact metric references",String(metricMatches(row,"gog"))],["Trial exact metric references",String(metricMatches(row,"trial"))],
                ["Source SHA-256",row.source_member_sha256]]
     };
-    entry.searchText = (JSON.stringify(row)+" "+entry.name+" "+(alias || "")).toLowerCase();
+    entry.searchText = (JSON.stringify(row)+" "+JSON.stringify(assembly || {})+" "+entry.name+" "+(alias || "")).toLowerCase();
     return entry;
   }
 
@@ -440,7 +477,12 @@
       documentIndex = loaded.index;
       const byId = new Map(Object.entries(documentIndex.aliases).map(([alias,id]) => [id,alias]));
       const rows = loaded.records.concat(supplemental.records);
-      const entries = rows.map(row => documentEntry(row,byId.get(row.id)));
+      const studies = window.DocumentCorpus.assemblyStudies(documentIndex);
+      const studiesById = new Map(studies.map(study=>[study.id,study]));
+      if (studies.some(study=>!rows.some(row=>row.id === study.id && row.source_member_sha256 === study.source_member_sha256))) {
+        throw new Error("Assembly study source is absent from this corpus snapshot.");
+      }
+      const entries = rows.map(row => documentEntry(row,byId.get(row.id),studiesById.get(row.id)));
       if (new Set(entries.map(entry=>entry.id)).size !== entries.length) throw new Error("Combined source-record IDs are not unique.");
       for (const [id,values,label] of [["document-model-family",new Set(rows.map(row=>row.family)),value=>value],
                                      ["document-model-status",new Set(rows.map(row=>row.status)),value=>geometryLabels[value] || value.replaceAll("_"," ")]]) {
@@ -459,7 +501,7 @@
       const cat = catalogs.document;
       cat.entries = entries;
       cat.title = entries.length.toLocaleString()+" source records";
-      cat.summary = "The recognized EVM, KMS, nested ZMS and Physics families contain "+summary.logical_models.toLocaleString()+" logical models, with "+supplemental.records.length.toLocaleString()+" separately counted supplemental geometry sources. Six model exports retain part-local geometry with native assembly open.";
+      cat.summary = "The recognized EVM, KMS, nested ZMS and Physics families contain "+summary.logical_models.toLocaleString()+" logical models, with "+supplemental.records.length.toLocaleString()+" separately counted supplemental geometry sources. "+(studies.length ? "Six part-bank studies bind "+studies.reduce((n,row)=>n+row.verified_variants,0).toLocaleString()+" conditional source-part selections." : "Six source banks retain part-local geometry.");
       cat.stats = [[summary.logical_models.toLocaleString(),"logical model records"],[supplemental.records.length.toLocaleString(),"supplemental geometry sources"],
                    [summary.gog_exact_geometry_models.toLocaleString(),"model GOG metric matches"],[summary.trial_exact_geometry_models.toLocaleString(),"model Trial metric matches"]];
       cat.boundary = "Every source group in both DAT archives was replayed: 456 stages, 948 groups, 20,087 member occurrences. EVM/KMS equality compares local signed-i16 XYZ triangle multisets and ignores transforms, hierarchy, UVs, normals, weights and materials. Physics uses a separate float64 polygon/unpacked-byte metric. Supplemental records retain their own point/line/triangle metric; point arrays do not establish surface topology. Shared geometry does not establish identical textures, actors or native behavior. Extracted assets remain local.";
@@ -478,6 +520,7 @@
         renderEntries();
       }
     } catch (error) {
+      window.DocumentCorpus.reset();
       documentLoadError = "Full corpus unavailable: "+(error.message || "metadata could not be loaded")+" The eleven curated records below are the earlier sample scope.";
       if (currentEdition === "document") renderEntries();
     } finally {

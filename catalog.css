@@ -50,6 +50,14 @@
 .record-source-metadata{margin-top:16px;padding:12px;border:1px solid var(--line);font:11px/1.6 var(--sans);min-width:0}
 .record-source-metadata summary{cursor:pointer;font:10px/1.6 var(--mono)}
 .record-source-metadata pre{font:10px/1.6 var(--mono);max-height:360px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;margin:12px 0 0;max-width:100%}
+.record-assembly-study{margin-top:16px;padding:16px;border:1px solid var(--line);border-left:3px solid var(--orange);min-width:0;overflow-wrap:anywhere}
+.record-assembly-study h4{font:23px/1.15 var(--serif);margin:0 0 10px}
+.record-assembly-study p,.record-assembly-study li{font:11px/1.7 var(--sans);color:var(--muted)}
+.record-assembly-study ul{padding-left:18px;margin:12px 0}
+.record-assembly-study .assembly-state{font:10px/1.7 var(--mono);color:var(--ink)}
+.record-assembly-study summary{font:10px/1.7 var(--mono);cursor:pointer;padding:7px 0}
+.record-assembly-study summary:focus-visible{outline:3px solid var(--orange);outline-offset:3px}
+.record-assembly-study pre{font:10px/1.6 var(--mono);max-height:300px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;margin:12px 0 0}
 .catalog-no-script{padding:24px 7%;font-size:13px;line-height:1.8}
 .index-heading>div{min-width:0}.index-heading h3{overflow-wrap:anywhere}.catalog-count{white-space:normal;flex-shrink:0;max-width:95px;text-align:center;line-height:1.5}
 .catalog-item span{overflow-wrap:anywhere}

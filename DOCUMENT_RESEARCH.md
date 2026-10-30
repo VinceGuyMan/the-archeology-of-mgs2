@@ -1,6 +1,6 @@
 # The Document of MGS2: field notes
 
-October 26, 2026 · USA PS2 disc · `SLUS_205.43` · static and diagnostic evidence
+October 30, 2026 · USA PS2 disc · `SLUS_205.43` · static and diagnostic evidence
 
 The Document of Metal Gear Solid 2 has its own [exhibition room](document.html) and [model catalog](catalog.html?edition=document). The full corpus pass now indexes **3,945 records in the main model families, 150 supplemental geometry sources and 3,253 texture containers containing 59,485 decoded source RGB entries**. The catalog's 4,095 source records include separate point, line, cloth and memory-card-icon families. Fourteen storyboard sheets have individual visual/caption identifications. Resource and export counts do not count complete native actors. Extracted game files, image previews, geometry exports, and native decompiler listings remain outside this public repository.
 
@@ -13,11 +13,23 @@ The public [metadata index](document-corpus.json) links every reviewed model and
 | Model family | Logical records | Evidence and remaining limits |
 |---|---:|---|
 | EVM | 289 | Bounded source streams, including layouts rejected by the earlier sample decoder. Local positions do not establish complete actors, native pose or materials. |
-| KMS, including nested ZMS | 3,651 | Every identified source model and nested child has a static export and source ledger. Six retain part-local geometry with native assembly unverified. |
+| KMS, including nested ZMS | 3,651 | Every identified source model and nested child has a static export and source ledger. Six part banks now have verified selection studies; native mesh pose remains unverified. |
 | Physics 8020.0002 | 5 | Lossless outer LZSS unpacking, bounded float64 source polygons, authored scale/translation and static exports. One is stored under type 17 rather than type 12. |
 | **Total** | **3,945** | **3,934 static geometry records, six part-local records and five authored Physics polygon records.** |
 
 The source-model scope has 11,001 resource occurrences and 3,917 distinct source members. Nested children make the logical-model count larger than the source-member count. A zero-geometry placeholder inside an authored model is retained as an object record, not promoted to a separate actor.
+
+### Six part-bank assembly studies
+
+The six formerly unresolved sources are replacement-part banks: `cit_male_all_def`, `w04a_us_def`, `nyp_def_epa`, and the `hos_all_def`, `hos_all_mid` and `hos_all_low` LOD banks. Native wrappers name a separate 21-part base model and a table of signed selections. A negative entry keeps that base slot; a nonnegative entry chooses a bank part. The matrix selector then addresses the selected host slots. Treating every part in a bank as one skeleton would join alternative parts incorrectly.
+
+The complete **248 bank parts** match their ordered GOG counterparts in local triangle geometry and 44 bytes of flags, bounds, origin and selector fields. The source-based selection study verifies **187 selector rows / 184 distinct part maps** across **20 actual stage contexts and 15 distinct overlays**: 96 civilian choices, 54 `w04a` choices, four NYPD choices and eleven for each hostage LOD bank. Every actual context has a verified wrapper, matching complete selection-helper bytes and exact eligible table bytes. These are available choices in source data; no scene choice was executed or observed.
+
+Five guard-admitted boundary choices reach neighboring data and are withheld: `w04a` selector 54, NYPD selector 4 and each hostage selector 11. Two happen to look like valid base aliases in the character-viewer table but contain invalid neighboring values in other actual stage overlays. A wrapper's numerical guard alone is insufficient to admit them. This is static boundary evidence, not a claim that a runtime fault was observed.
+
+All **187** retained selections match the same base-plus-bank reconstruction from GOG. **58** also match a standalone GOG asset's ordered local geometry and 20-byte flags/origin/selector placement fields; **13** additionally match all bound fields in the stricter 44-byte metric. Counts describe selector rows, including repeated maps. Compared scope: 3,922 GOG KMY sources. No selected sequence matches the 641 Trial KMS sources under these metrics; the separate bank-part comparison covered 655 Trial EVM/KMS sources. These negatives do not establish global exclusivity.
+
+There are **187 independently checked local GLBs** for rigid source-part inspection. Every source coordinate, triangle and selected-slot origin is verified. Their identity-object, cumulative-origin convention is conditional: the sources contain nontrivial vertex weights, while these diagnostics omit skinning. They do not reproduce a native zero-angle mesh, final pose, animation, materials or complete actor behavior. The six source records remain part banks; the derivatives do not inflate the 4,095-source catalog. Their [study cards](document.html#assembly-research) and catalog links expose the evidence and limits, and the existing local inspector accepts the GLBs without uploading them.
 
 ### What changed from the samples
 

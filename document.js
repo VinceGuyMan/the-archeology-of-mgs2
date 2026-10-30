@@ -110,11 +110,57 @@
     }
   }
 
+  function renderAssemblyStudies(index) {
+    const container = document.getElementById("assembly-study-records");
+    const status = document.getElementById("assembly-study-status");
+    const sharedLimits = document.getElementById("assembly-study-limits");
+    container.replaceChildren();
+    sharedLimits.hidden = true;
+    sharedLimits.textContent = "";
+    try {
+      const studies = window.DocumentCorpus.assemblyStudies(index);
+      if (!studies.length) {
+        status.textContent = "No assembly studies are included in this metadata snapshot.";
+        return;
+      }
+      for (const study of studies) {
+        const article = document.createElement("article");
+        article.dataset.assemblyId = study.id;
+        article.append(text("p","SOURCE BUNDLE / ASSEMBLY EVIDENCE","eyebrow"),text("h4",study.title),
+          text("p",study.assembly_status.replaceAll("_"," "),"assembly-state"));
+        const facts = document.createElement("ul");
+        facts.append(text("li",study.part_count.toLocaleString()+" source parts"),
+          text("li",study.verified_variants.toLocaleString()+" verified local variant"+(study.verified_variants === 1 ? "" : "s")));
+        article.append(facts,text("p",study.findings[0]),text("p","GOG: "+study.gog.summary),text("p","Trial: "+study.trial.summary));
+        const details = document.createElement("details");
+        const limits = document.createElement("ul");
+        for (const limit of study.limitations) limits.append(text("li",limit));
+        details.append(text("summary","Evidence and remaining limits"),limits,text("pre",JSON.stringify(study,null,2)));
+        const link = text("a","Inspect this assembly study ↗");
+        link.href = "catalog.html?edition=document&specimen="+encodeURIComponent(study.id);
+        article.append(details,link);
+        container.append(article);
+      }
+      status.textContent = studies.length+" source bundles studied · included in the existing model count";
+      sharedLimits.textContent = index.assembly_studies.limits.join(" ");
+      sharedLimits.hidden = false;
+    } catch (error) {
+      container.replaceChildren();
+      status.textContent = "Assembly studies unavailable: "+(error.message || "metadata could not be checked");
+      const retry = text("button","Retry assembly metadata","assembly-retry");
+      retry.id = "assembly-study-retry";
+      retry.type = "button";
+      retry.addEventListener("click",()=>{window.DocumentCorpus.reset();load();});
+      status.append(retry);
+    }
+  }
+
   async function load() {
     results.setAttribute("aria-busy","true");
     count.textContent = "Loading and checking the full texture metadata…";
     try {
       const data = await window.DocumentCorpus.load("textures");
+      renderAssemblyStudies(data.index);
       records = data.records.map(row => ({...row,searchText:JSON.stringify(row).toLowerCase()}));
       document.getElementById("texture-corpus-controls").hidden = false;
       document.getElementById("texture-corpus-pagination").hidden = false;
@@ -159,6 +205,9 @@
       ledger.append(ledgerDetails);otherFamilies.append(ledger);
       render();
     } catch (error) {
+      document.getElementById("assembly-study-records").replaceChildren();
+      document.getElementById("assembly-study-limits").hidden = true;
+      document.getElementById("assembly-study-status").textContent = "Assembly studies unavailable until the corpus metadata can be checked.";
       count.textContent = "Full texture index unavailable: "+(error.message || "metadata could not be loaded");
       results.replaceChildren();
       const row = document.createElement("tr");

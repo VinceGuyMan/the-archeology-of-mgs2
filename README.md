@@ -14,7 +14,7 @@ The default previews use synthetic data and original graphics. The model catalog
 | PS2 versions | Regional binary mappings (SLED-50117 / Retail), VU1 microcode pipeline disassembly, and texture swizzle audits. |
 | Trials and demos | Verified gameplay route swaps (Olga all-room, Opening Bridge04, bloodied Snake, soldier), 464 passing repository tests. |
 | Skateboarding | 115 named BNDR records indexed, SKATE2.ELF analyzed, and movement mechanics reverse-engineered. |
-| The Document of MGS2 (USA) | Complete 456-stage source-group pass; 3,945 logical model records, 3,253 texture containers and 59,485 decoded source RGB entries. Separate EVM/KMS and Physics metrics, six part-local assemblies still open, and fourteen individually identified storyboard sheets. |
+| The Document of MGS2 (USA) | Complete 456-stage source-group pass; 3,945 logical model records, 3,253 texture containers and 59,485 decoded source RGB entries. Six part-bank studies bind 187 conditional rigid selections; native skinning and pose remain unverified. Fourteen individually identified storyboard sheets. |
 
 Open the [interactive model catalogs](catalog.html) to browse findings, orbit synthetic teaching proxies, and inspect a local GLTF/GLB. A local import can be cleared at any time; no file is sent to a server or saved by the page.
 

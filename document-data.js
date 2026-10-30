@@ -5,6 +5,11 @@
   let indexPromise = null;
   const collections = new Map();
 
+  function reset() {
+    collections.clear();
+    indexPromise = null;
+  }
+
   async function readJson(path, expected) {
     if (!/^(?:document-corpus\.json|data\/document\/(?:models|textures|geometry)-\d+\.json)$/.test(path)) {
       throw new Error("Unsupported metadata path.");
@@ -63,8 +68,7 @@
         return {index:metadata, records};
       })().catch(error => {
         // Retry must fetch a current index and every collection from the same publication.
-        collections.clear();
-        indexPromise=null;
+        reset();
         throw error;
       });
       collections.set(kind,promise);
@@ -72,5 +76,31 @@
     return collections.get(kind);
   }
 
-  window.DocumentCorpus = Object.freeze({index,load});
+  function assemblyStudies(metadata) {
+    const studies = metadata.assembly_studies;
+    if (studies === undefined) return [];
+    const strings = value => Array.isArray(value) && value.every(item => typeof item === "string" && item.trim());
+    const count = value => Number.isInteger(value) && value >= 0;
+    if (studies?.schema !== "document-six-assembly-studies-public-v1" || !Array.isArray(studies.records) ||
+        studies.records.length !== 6 || !strings(studies.limits) || !studies.limits.length ||
+        /\/(?:Users|home|Volumes|private|tmp|var\/folders|mnt|root)\/|[A-Za-z]:\\/i.test(JSON.stringify(studies))) {
+      throw new Error("Assembly metadata coverage or public-boundary check failed.");
+    }
+    const ids = new Set();
+    for (const row of studies.records) {
+      if (!row || !/^[a-f0-9]{64}$/.test(row.source_member_sha256) || row.id !== "document-corpus-"+row.source_member_sha256 ||
+          ids.has(row.id) || typeof row.title !== "string" || !row.title.trim() ||
+          typeof row.assembly_status !== "string" || !row.assembly_status.trim() ||
+          !count(row.part_count) || !count(row.verified_variants) ||
+          !strings(row.findings) || !row.findings.length || !strings(row.limitations) || !row.limitations.length ||
+          !strings(row.local_export_modes) || typeof row.gog?.summary !== "string" || !row.gog.summary.trim() ||
+          typeof row.trial?.summary !== "string" || !row.trial.summary.trim()) {
+        throw new Error("Assembly source-record validation failed.");
+      }
+      ids.add(row.id);
+    }
+    return studies.records;
+  }
+
+  window.DocumentCorpus = Object.freeze({index,load,assemblyStudies,reset});
 })();
